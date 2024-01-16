@@ -10,7 +10,7 @@ import game.Note;
 import game.StrumNote;
 import game.Conductor;
 import utilities.CoolUtil;
-#elseif (PSYCH && PSYCHVERSION == 0.7)
+#elseif (PSYCH && PSYCHVERSION == "0.7")
 import states.PlayState;
 import objects.Note;
 #else 
