@@ -46,7 +46,7 @@ import states.PlayState;
 import game.Song;
 import game.Section.SwagSection;
 import game.Note;
-import ui.FlxUIDropDownMenuCustom;
+import ui.FlxScrollableDropDownMenu;
 import game.Conductor;
 import utilities.CoolUtil;
 import game.StrumNote;
@@ -616,7 +616,7 @@ class ModchartEditorState extends #if SCEModchartingTools states.MusicBeatState 
 	}
 	#end
         totalElapsed += elapsed;
-        highlight.alpha = 0.8+Math.sin(totalElapsed*5)*0.15;
+        highlight.alpha = 0.8+FlxMath.fastSin(totalElapsed*5)*0.15;
         super.update(elapsed);
         if(inst.time < 0) {
 			inst.pause();
