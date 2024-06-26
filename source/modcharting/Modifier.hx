@@ -1923,12 +1923,8 @@ class ArrowPath extends Modifier {
     public var _pathDistance: Float = 0;
 
     override public function noteMath(noteData: NotePositionData, lane: Int, curPos: Float, pf: Int) {
-        #if PSYCH 
-	#if SCEModchartingTools
-        if (Paths.fileExists("data/songs/"+PlayState.SONG.song.toLowerCase()+"/customMods/path.txt", TEXT))
-	#else
-	if (Paths.fileExists("data/"+PlayState.SONG.song.toLowerCase()+"/customMods/path.txt", TEXT))
-	#end
+        #if PSYCH
+	    if (Paths.fileExists("data/"+Paths.formatToSongPath(PlayState.SONG.song)+"/customMods/path.txt", TEXT))
         #elseif LEATHER 
         if (openfl.utils.Assets.exists(Paths.txt(PlayState.SONG.song.toLowerCase()+"/customMods/path")))
         #end
@@ -1956,18 +1952,10 @@ class ArrowPath extends Modifier {
         }
     public function loadPath() {
         var file = null;
-	#if !SCEModchartingTools
 	file = CoolUtil.coolTextFile(Paths#if PSYCH .modFolders #else .txt#end(#if PSYCH "data/"+#end PlayState.SONG.song.toLowerCase()+"/customMods/path"#if PSYCH +".txt"#end));
-	#else			     
-	file = CoolUtil.coolTextFile(Paths.modFolders("data/songs/"+PlayState.SONG.song.toLowerCase()+"/customMods/path.txt"));
-	#end
         @:privateAccess
         var file2 = null;
-	#if !SCEModchartingTools
 	file2 = CoolUtil.coolTextFile(#if (PSYCH && PSYCHVERSION >= "0.7.3") Paths.getSharedPath #else Paths.getPreloadPath #end("data/"+PlayState.SONG.song.toLowerCase()+"/customMods/path.txt"));
-	#else
-	file2 = CoolUtil.coolTextFile(Paths.getSharedPath("data/songs/"+PlayState.SONG.song.toLowerCase()+"/customMods/path.txt"));
-	#end
 
         var filePath = null;
         if (file != null) {

@@ -27,14 +27,10 @@ import states.PlayState;
 import game.Note;
 import game.StrumNote;
 import game.Conductor;
-#elseif (PSYCH && PSYCHVERSION >= "0.7" || SCEModchartingTools)
+#elseif (PSYCH && PSYCHVERSION >= "0.7")
 import states.PlayState;
 import objects.Note;
-#if !SCEModchartingTools
 import objects.StrumNote;
-#else
-import objects.StrumArrow;
-#end
 #else
 import PlayState;
 import Note;
@@ -52,8 +48,7 @@ using StringTools;
 //start documenting more stuff idk
 
 typedef StrumNoteType = 
-#if ((PSYCH || LEATHER) && !SCEModchartingTools) StrumNote
-#elseif SCEModchartingTools StrumArrow
+#if (PSYCH || LEATHER) StrumNote
 #elseif KADE StaticArrow
 #elseif FOREVER_LEGACY UIStaticArrow
 #elseif ANDROMEDA Receptor
@@ -149,9 +144,8 @@ class PlayfieldRenderer extends FlxSprite //extending flxsprite just so i can ed
     {
         strum.x = strumData.x;
         strum.y = strumData.y;
-        #if SCEModchartingTools //Add Z to your StrumNote and take the #if out if you want it youself!
-        strum.z = strumData.z;
-        #end
+        //Add Z to your strumNoteType if you want it youself!
+        //strum.z = strumData.z;
         strum.angle = strumData.angle;
         strum.alpha = strumData.alpha;
         strum.scale.x = strumData.scaleX;
@@ -237,15 +231,7 @@ class PlayfieldRenderer extends FlxSprite //extending flxsprite just so i can ed
     }
     private function getLane(noteIndex:Int)
     {
-        //Forgot SCE changes with opponentMode and forgot to add here lmao -glow
-        //Taken the && !ClientPrefs.data.middleScroll Let's see what happens now.
-        #if SCEModchartingTools
-        if (CoolUtil.opponentModeActive)
-            return (notes.members[noteIndex].mustPress ? notes.members[noteIndex].noteData : notes.members[noteIndex].noteData+NoteMovement.keyCount);
-        else return (notes.members[noteIndex].mustPress ? notes.members[noteIndex].noteData+NoteMovement.keyCount : notes.members[noteIndex].noteData);
-        #else
         return (notes.members[noteIndex].mustPress ? notes.members[noteIndex].noteData+NoteMovement.keyCount : notes.members[noteIndex].noteData);
-        #end
     }
     private function getNoteDist(noteIndex:Int)
     {
@@ -399,7 +385,7 @@ class PlayfieldRenderer extends FlxSprite //extending flxsprite just so i can ed
             timeToNextSustain *= -1; //weird shit that fixes upscroll lol
             // timeToNextSustain = -ModchartUtil.getFakeCrochet()/4; //weird shit that fixes upscroll lol
 
-        #if (!SCEModchartingTools || (PSYCH && !(PSYCHVERSION >= "0.7")))
+        #if (PSYCH && !(PSYCHVERSION >= "0.7"))
         var nextHalfNotePos = getSustainPoint(noteData, timeToNextSustain*0.5);
         var nextNotePos = getSustainPoint(noteData, timeToNextSustain);
         #else
