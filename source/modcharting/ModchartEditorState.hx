@@ -1327,7 +1327,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
         usedKeyCount = 4;
         #end
 
-        var strumLineX:Float = #if (PSYCH && PSYCHVERSION >= "0.7") ClientPrefs.data.middleScroll #elseif (PSYCH && PSYCHVERSION < "0.7") ClientPrefs.middleScroll #elseif LEATHER utilities.Options.getData("middlescroll") #end #if PSYCH ? PlayState.STRUM_X_MIDDLESCROLL : PlayState.STRUM_X #else 0 #end;
+        var strumLineX:Float = #if (PSYCH && PSYCHVERSION >= "0.7") ClientPrefs.data.middleScroll ? PlayState.STRUM_X_MIDDLESCROLL : PlayState.STRUM_X #elseif (PSYCH && PSYCHVERSION < "0.7") ClientPrefs.middleScroll ? PlayState.STRUM_X_MIDDLESCROLL : PlayState.STRUM_X #elseif LEATHER utilities.Options.getData("middlescroll") #end ;
 
 		var TRUE_STRUM_X:Float = strumLineX;
 
