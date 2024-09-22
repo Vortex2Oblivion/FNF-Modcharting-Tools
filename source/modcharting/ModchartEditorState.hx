@@ -82,19 +82,19 @@ class ModchartEditorEvent extends FlxSprite
         this.data = data;
         super(-300, 0);
         #if LEATHER 
-        frames = Paths.getSparrowAtlas("ui skins/" + utilities.Options.getData("uiSkin") + "/arrows/default", 'shared');
-        animation.addByPrefix('note', 'left0');
+	loadGraphic("assets/shared/images/charter/eventSprite.png");
+	antialiasing = Options.getData("antialiasing");
         #else
         frames = Paths.getSparrowAtlas('eventArrowModchart', 'shared');
         animation.addByPrefix('note', 'idle0');
+	animation.play('note');
+	antialiasing = true;
         #end
         //makeGraphic(48, 48);
-        
-        
-        animation.play('note');
+
         setGraphicSize(ModchartEditorState.gridSize, ModchartEditorState.gridSize);
         updateHitbox();
-        antialiasing = true;
+        
     }
     public function getBeatTime():Float { return data[ModchartFile.EVENT_DATA][ModchartFile.EVENT_TIME]; }
     #end
@@ -1359,7 +1359,8 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 
             #if LEATHER 
             var babyArrow:StrumNote = new StrumNote(0, strumLine.y, i, null, null, null, usedKeyCount);
-			babyArrow.frames = arrow_Type_Sprites.get("default");
+			babyArrow.frames = Assets.exists(Paths.image("ui skins/" + SONG.ui_Skin + "/arrows/strums")) ? Paths.getSparrowAtlas('ui skins/' + SONG.ui_Skin
+				+ "/arrows/strums") : Paths.getSparrowAtlas('ui skins/' + SONG.ui_Skin + "/arrows/default");
 
 			babyArrow.antialiasing = ui_settings[3] == "true";
 
