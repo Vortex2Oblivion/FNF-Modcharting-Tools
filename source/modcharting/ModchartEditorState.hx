@@ -1140,7 +1140,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 
         inst = new FlxSound();
         try {
-            inst.loadEmbedded(Paths.inst(PlayState.SONG.song));
+            inst.loadEmbedded(Paths.inst(PlayState.SONG.song, (PlayState.SONG.specialAudioName == null ? PlayState.storyDifficultyStr.toLowerCase() : PlayState.SONG.specialAudioName)));
 		}
         FlxG.sound.list.add(inst);
 
