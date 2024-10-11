@@ -57,7 +57,7 @@ class ModchartFile
 
 
     public var data:ModchartJson = null;
-    private var renderer:PlayfieldRenderer;
+    public var renderer:PlayfieldRenderer;
     public var scriptListen:Bool = false;
     #if hscript
     public var customModifiers:Map<String, Dynamic> = new Map<String, Dynamic>();
@@ -205,12 +205,13 @@ class ModchartFile
         {
             try
             {
+								hasDifficultyModchart = openfl.utils.Assets.exists(Paths.json("song data/" + folder + '/modchart-' + difficulty.toLowerCase()));
                 #if MODS_ALLOWED
                 if (hasDifficultyModchart)
                 {
 
                     #if LEATHER
-                        filePath = Paths.json("song data/" + folder + '/modchart-' + difficulty.toLowerCase());
+                        filePath = 
                         folderShit = PolymodAssets.getPath(filePath.replace('modchart-' + difficulty.toLowerCase() + '.json', "customMods/"));
                     #else 
                         filePath = Paths.modsJson(folder + '/modchart-' + difficulty.toLowerCase());
@@ -223,7 +224,7 @@ class ModchartFile
                 { 
                     #if LEATHER
                         filePath = Paths.json("song data/" + folder + '/modchart');
-                        folderShit = PolymodAssets.getPath(filePath.replace('modchart.json', "customMods/"));
+                        folderShit = Asset.getPath(filePath.replace('modchart.json', "customMods/"));
                     #else 
                         filePath = Paths.modsJson(folder + '/modchart');
                         folderShit = filePath.replace('modchart.json', "customMods/");
@@ -232,7 +233,7 @@ class ModchartFile
                     trace('${difficulty} Modchart Has No FolderShit Found In Mods! loading modchart.json');
                 }
                 #end
-
+					
 
                 if (hasDifficultyModchart)
                 {
