@@ -140,7 +140,7 @@ class PlayfieldRenderer extends FlxSprite //extending flxsprite just so i can ed
     }
 
 
-    private function addDataToStrum(strumData:NotePositionData, strum:StrumNoteType)
+    public function addDataToStrum(strumData:NotePositionData, strum:StrumNoteType)
     {
         strum.x = strumData.x;
         strum.y = strumData.y;
@@ -154,7 +154,7 @@ class PlayfieldRenderer extends FlxSprite //extending flxsprite just so i can ed
         strum.skew.y = strumData.skewY;
     }
 
-    private function getDataForStrum(i:Int, pf:Int)
+    public function getDataForStrum(i:Int, pf:Int)
     {
         var strumX = NoteMovement.defaultStrumX[i];
         var strumY = NoteMovement.defaultStrumY[i];
@@ -178,7 +178,7 @@ class PlayfieldRenderer extends FlxSprite //extending flxsprite just so i can ed
 
    
 
-    private function addDataToNote(noteData:NotePositionData, daNote:Note)
+    public function addDataToNote(noteData:NotePositionData, daNote:Note)
     {
         daNote.x = noteData.x;
         daNote.y = noteData.y;
@@ -190,7 +190,7 @@ class PlayfieldRenderer extends FlxSprite //extending flxsprite just so i can ed
         daNote.skew.x = noteData.skewX;
         daNote.skew.y = noteData.skewY;
     }
-    private function createDataFromNote(noteIndex:Int, playfieldIndex:Int, curPos:Float, noteDist:Float, incomingAngle:Array<Float>)
+    public function createDataFromNote(noteIndex:Int, playfieldIndex:Int, curPos:Float, noteDist:Float, incomingAngle:Array<Float>)
     {
         var noteX = notes.members[noteIndex].x;
         var noteY = notes.members[noteIndex].y;
@@ -217,7 +217,7 @@ class PlayfieldRenderer extends FlxSprite //extending flxsprite just so i can ed
         return noteData;
     }
 
-    private function getNoteCurPos(noteIndex:Int, strumTimeOffset:Float = 0)
+    public function getNoteCurPos(noteIndex:Int, strumTimeOffset:Float = 0)
     {
         #if PSYCH
         if (notes.members[noteIndex].isSustainNote && ModchartUtil.getDownscroll(instance))
@@ -229,11 +229,11 @@ class PlayfieldRenderer extends FlxSprite //extending flxsprite just so i can ed
         var distance = (Conductor.songPosition - notes.members[noteIndex].strumTime) + strumTimeOffset;
         return distance*getCorrectScrollSpeed();
     }
-    private function getLane(noteIndex:Int)
+    public inline function getLane(noteIndex:Int)
     {
         return (notes.members[noteIndex].mustPress ? notes.members[noteIndex].noteData+NoteMovement.keyCount : notes.members[noteIndex].noteData);
     }
-    private function getNoteDist(noteIndex:Int)
+    public function getNoteDist(noteIndex:Int)
     {
         var noteDist = -0.45;
         if (ModchartUtil.getDownscroll(instance))
@@ -242,7 +242,7 @@ class PlayfieldRenderer extends FlxSprite //extending flxsprite just so i can ed
     }
 
 
-    private function getNotePositions()
+    public function getNotePositions()
     {
         var notePositions:Array<NotePositionData> = [];
         for (pf in 0...playfields.length)
@@ -307,7 +307,7 @@ class PlayfieldRenderer extends FlxSprite //extending flxsprite just so i can ed
         return notePositions;
     }
 
-    private function drawStrum(noteData:NotePositionData)
+    public function drawStrum(noteData:NotePositionData)
     {
         if (noteData.alpha <= 0)
             return;
@@ -358,7 +358,7 @@ class PlayfieldRenderer extends FlxSprite //extending flxsprite just so i can ed
         //draw it
         notes.members[noteData.index].draw();
     }
-    private function drawSustainNote(noteData:NotePositionData)
+    public function drawSustainNote(noteData:NotePositionData)
     {
         if (noteData.alpha <= 0)
             return;
@@ -417,7 +417,7 @@ class PlayfieldRenderer extends FlxSprite //extending flxsprite just so i can ed
         daNote.mesh.draw();
     }
 
-    private function drawStuff(notePositions:Array<NotePositionData>)
+    public function drawStuff(notePositions:Array<NotePositionData>)
     {
         for (noteData in notePositions)
         {
@@ -432,7 +432,7 @@ class PlayfieldRenderer extends FlxSprite //extending flxsprite just so i can ed
         }
     }
 
-    function getSustainPoint(noteData:NotePositionData, timeOffset:Float):NotePositionData
+    public function getSustainPoint(noteData:NotePositionData, timeOffset:Float):NotePositionData
     {
         var daNote:Note = notes.members[noteData.index];
         var songSpeed:Float = getCorrectScrollSpeed();
