@@ -13,7 +13,7 @@ import flixel.FlxStrip;
 
 class SustainStrip extends FlxStrip
 {
-    private static final noteUV:Array<Float> = [
+    public static final noteUV:Array<Float> = [
         0,0, //top left
         1,0, //top right
         0,0.5, //half left
@@ -21,12 +21,12 @@ class SustainStrip extends FlxStrip
         0,1, //bottom left
         1,1, //bottom right 
     ];
-    private static final noteIndices:Array<Int> = [
+    public static final noteIndices:Array<Int> = [
         0,1,2,1,3,2, 2,3,4,3,4,5
         //makes 4 triangles
     ];
 
-    private var daNote:Note;
+    public var daNote:Note;
 
     override public function new(daNote:Note)
     {

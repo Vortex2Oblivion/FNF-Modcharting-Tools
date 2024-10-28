@@ -109,15 +109,15 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 	}
 
 	#if LEATHER
-	private var curDecStep:Float = 0;
-	private var curDecBeat:Float = 0;
+	public var curDecStep:Float = 0;
+	public var curDecBeat:Float = 0;
 
-	override private function updateBeat():Void {
+	override public function updateBeat():Void {
 		curBeat = Math.floor(curStep / Conductor.timeScale[1]);
 		curDecBeat = curDecStep / Conductor.timeScale[1];
 	}
 
-	override private function updateCurStep():Void {
+	override public function updateCurStep():Void {
 		var lastChange:BPMChangeEvent = {
 			stepTime: 0,
 			songTime: 0,
@@ -320,7 +320,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 	public var camGame:FlxCamera;
 	public var notes:FlxTypedGroup<Note>;
 
-	private var strumLine:FlxSprite;
+	public var strumLine:FlxSprite;
 
 	public var strumLineNotes:FlxTypedGroup<StrumNoteType>;
 	public var opponentStrums:FlxTypedGroup<StrumNoteType>;
@@ -334,8 +334,8 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 
 	var generatedMusic:Bool = false;
 
-	private var grid:FlxBackdrop;
-	private var line:FlxSprite;
+	public var grid:FlxBackdrop;
+	public var line:FlxSprite;
 	var beatTexts:Array<FlxText> = [];
 
 	public var eventSprites:FlxTypedGroup<ModchartEditorEvent>;
@@ -1282,11 +1282,11 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		generatedMusic = true;
 	}
 
-	function sortByTime(Obj1:Dynamic, Obj2:Dynamic):Int {
+	public inline function sortByTime(Obj1:Dynamic, Obj2:Dynamic):Int {
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.strumTime, Obj2.strumTime);
 	}
 
-	private function generateStaticArrows(player:Int):Void {
+	public function generateStaticArrows(player:Int):Void {
 		var usedKeyCount = 4;
 		#if LEATHER
 		usedKeyCount = PlayState.SONG.keyCount;
@@ -1461,7 +1461,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 	var mods:Array<String> = [];
 	var subMods:Array<String> = [""];
 
-	function updateModList() {
+	public function updateModList() {
 		mods = [];
 		for (i in 0...playfieldRenderer.modchart.data.modifiers.length)
 			mods.push(playfieldRenderer.modchart.data.modifiers[i][MOD_NAME]);
@@ -1471,7 +1471,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		eventModifierDropDown.setData(FlxUIDropDownMenu.makeStrIdLabelArray(mods, true));
 	}
 
-	function updateSubModList(modName:String) {
+	public function updateSubModList(modName:String) {
 		subMods = [""];
 		if (playfieldRenderer.modifierTable.modifiers.exists(modName)) {
 			for (subModName => subMod in playfieldRenderer.modifierTable.modifiers.get(modName).subValues) {
@@ -1481,7 +1481,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		subModDropDown.setData(FlxUIDropDownMenu.makeStrIdLabelArray(subMods, true));
 	}
 
-	function setupModifierUI() {
+	public function setupModifierUI() {
 		var tab_group = new FlxUI(null, UI_box);
 		tab_group.name = "Modifiers";
 
@@ -1618,190 +1618,187 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 	}
 
 	// Thanks to glowsoony for the idea lol
-	function modifierExplain(modifiersName:String):String {
-		var explainString:String = '';
-
+	public function modifierExplain(modifiersName:String):String {
 		switch modifiersName {
 			case 'DrunkXModifier':
-				explainString = "Modifier used to do a wave at X poss of the notes and targets";
+				return "Modifier used to do a wave at X poss of the notes and targets";
 			case 'DrunkYModifier':
-				explainString = "Modifier used to do a wave at Y poss of the notes and targets";
+				return "Modifier used to do a wave at Y poss of the notes and targets";
 			case 'DrunkZModifier':
-				explainString = "Modifier used to do a wave at Z (Far, Close) poss of the notes and targets";
+				return "Modifier used to do a wave at Z (Far, Close) poss of the notes and targets";
 			case 'TipsyXModifier':
-				explainString = "Modifier similar to DrunkX but don't affect notes poss";
+				return "Modifier similar to DrunkX but don't affect notes poss";
 			case 'TipsyYModifier':
-				explainString = "Modifier similar to DrunkY but don't affect notes poss";
+				return "Modifier similar to DrunkY but don't affect notes poss";
 			case 'TipsyZModifier':
-				explainString = "Modifier similar to DrunkZ but don't affect notes poss";
+				return "Modifier similar to DrunkZ but don't affect notes poss";
 			case 'ReverseModifier':
-				explainString = "Flip the scroll type (Upscroll/Downscroll)";
+				return "Flip the scroll type (Upscroll/Downscroll)";
 			case 'SplitModifier':
-				explainString = "Flip the scroll type (HalfUpscroll/HalfDownscroll)";
+				return "Flip the scroll type (HalfUpscroll/HalfDownscroll)";
 			case 'CrossModifier':
-				explainString = "Flip the scroll type (Upscroll/Downscroll/Downscroll/Upscroll)";
+				return "Flip the scroll type (Upscroll/Downscroll/Downscroll/Upscroll)";
 			case 'AlternateModifier':
-				explainString = "Flip the scroll type (Upscroll/Downscroll/Upscroll/Downscroll)";
+				return "Flip the scroll type (Upscroll/Downscroll/Upscroll/Downscroll)";
 			case 'IncomingAngleModifier':
-				explainString = "Modifier that changes how notes come to the target (if X and Y aplied it will use Z)";
+				return "Modifier that changes how notes come to the target (if X and Y aplied it will use Z)";
 			case 'RotateModifier':
-				explainString = "Modifier used to rotate the lanes poss between a value aplied with rotatePoint (can be used with Y and X)";
+				return "Modifier used to rotate the lanes poss between a value aplied with rotatePoint (can be used with Y and X)";
 			case 'StrumLineRotateModifier':
-				explainString = "Modifier similar to RotateModifier but this one doesn't need a extra value (can be used with Y, X and Z)";
+				return "Modifier similar to RotateModifier but this one doesn't need a extra value (can be used with Y, X and Z)";
 			case 'BumpyModifier':
-				explainString = "Modifier used to make notes jump a bit in their own Perspective poss";
+				return "Modifier used to make notes jump a bit in their own Perspective poss";
 			case 'XModifier':
-				explainString = "Moves notes and targets X";
+				return "Moves notes and targets X";
 			case 'YModifier':
-				explainString = "Moves notes and targets Y";
+				return "Moves notes and targets Y";
 			case 'YDModifier':
-				explainString = "Moves notes and targets Y (Automatically reverses in downscroll)";
+				return "Moves notes and targets Y (Automatically reverses in downscroll)";
 			case 'ZModifier':
-				explainString = "Moves notes and targets Z (Far, Close)";
+				return "Moves notes and targets Z (Far, Close)";
 			case 'ConfusionModifier':
-				explainString = "Changes notes and targets angle";
+				return "Changes notes and targets angle";
 			case 'DizzyModifier':
-				explainString = "Changes notes angle making a visual on them";
+				return "Changes notes angle making a visual on them";
 			case 'ScaleModifier':
-				explainString = "Modifier used to make notes and targets bigger or smaller";
+				return "Modifier used to make notes and targets bigger or smaller";
 			case 'ScaleXModifier':
-				explainString = "Modifier used to make notes and targets bigger or smaller (Only in X)";
+				return "Modifier used to make notes and targets bigger or smaller (Only in X)";
 			case 'ScaleYModifier':
-				explainString = "Modifier used to make notes and targets bigger or smaller (Only in Y)";
+				return "Modifier used to make notes and targets bigger or smaller (Only in Y)";
 			case 'SpeedModifier':
-				explainString = "Modifier used to make notes be faster or slower";
+				return "Modifier used to make notes be faster or slower";
 			case 'StealthModifier':
-				explainString = "Modifier used to change notes and targets alpha";
+				return "Modifier used to change notes and targets alpha";
 			case 'NoteStealthModifier':
-				explainString = "Modifier used to change notes alpha";
+				return "Modifier used to change notes alpha";
 			case 'LaneStealthModifier':
-				explainString = "Modifier used to change targets alpha";
+				return "Modifier used to change targets alpha";
 			case 'InvertModifier':
-				explainString = "Modifier used to invert notes and targets X poss (down/left/right/up)";
+				return "Modifier used to invert notes and targets X poss (down/left/right/up)";
 			case 'FlipModifier':
-				explainString = "Modifier used to flip notes and targets X poss (right/up/down/left)";
+				return "Modifier used to flip notes and targets X poss (right/up/down/left)";
 			case 'MiniModifier':
-				explainString = "Modifier similar to ScaleModifier but this one does Z perspective";
+				return "Modifier similar to ScaleModifier but this one does Z perspective";
 			case 'ShrinkModifier':
-				explainString = "Modifier used to add a boost of the notes (the more value the less scale it will be at the start)";
+				return "Modifier used to add a boost of the notes (the more value the less scale it will be at the start)";
 			case 'BeatXModifier':
-				explainString = "Modifier used to move notes and targets X with a small jump effect";
+				return "Modifier used to move notes and targets X with a small jump effect";
 			case 'BeatYModifier':
-				explainString = "Modifier used to move notes and targets Y with a small jump effect";
+				return "Modifier used to move notes and targets Y with a small jump effect";
 			case 'BeatZModifier':
-				explainString = "Modifier used to move notes and targets Z with a small jump effect";
+				return "Modifier used to move notes and targets Z with a small jump effect";
 			case 'BounceXModifier':
-				explainString = "Modifier similar to beatX but it only affect notes X with a jump effect";
+				return "Modifier similar to beatX but it only affect notes X with a jump effect";
 			case 'BounceYModifier':
-				explainString = "Modifier similar to beatY but it only affect notes Y with a jump effect";
+				return "Modifier similar to beatY but it only affect notes Y with a jump effect";
 			case 'BounceZModifier':
-				explainString = "Modifier similar to beatZ but it only affect notes Z with a jump effect";
+				return "Modifier similar to beatZ but it only affect notes Z with a jump effect";
 			case 'EaseCurveModifier':
-				explainString = "This enables the EaseModifiers";
+				return "This enables the EaseModifiers";
 			case 'EaseCurveXModifier':
-				explainString = "Modifier similar to IncomingAngleMod (X), it will make notes come faster at X poss";
+				return "Modifier similar to IncomingAngleMod (X), it will make notes come faster at X poss";
 			case 'EaseCurveYModifier':
-				explainString = "Modifier similar to IncomingAngleMod (Y), it will make notes come faster at Y poss";
+				return "Modifier similar to IncomingAngleMod (Y), it will make notes come faster at Y poss";
 			case 'EaseCurveZModifier':
-				explainString = "Modifier similar to IncomingAngleMod (X+Y), it will make notes come faster at Z perspective";
+				return "Modifier similar to IncomingAngleMod (X+Y), it will make notes come faster at Z perspective";
 			case 'EaseCurveScaleModifier':
-				explainString = "Modifier similar to All easeCurve, it will make notes scale change, usually next to target";
+				return "Modifier similar to All easeCurve, it will make notes scale change, usually next to target";
 			case 'EaseCurveAngleModifier':
-				explainString = "Modifier similar to All easeCurve, it will make notes angle change, usually next to target";
+				return "Modifier similar to All easeCurve, it will make notes angle change, usually next to target";
 			case 'InvertSineModifier':
-				explainString = "Modifier used to do a curve in the notes it will be different for notes (Down and Right / Left and Up)";
+				return "Modifier used to do a curve in the notes it will be different for notes (Down and Right / Left and Up)";
 			case 'BoostModifier':
-				explainString = "Modifier used to make notes come faster to target";
+				return "Modifier used to make notes come faster to target";
 			case 'BrakeModifier':
-				explainString = "Modifier used to make notes come slower to target";
+				return "Modifier used to make notes come slower to target";
 			case 'BoomerangModifier':
-				explainString = "Modifier used to make notes come in reverse to target";
+				return "Modifier used to make notes come in reverse to target";
 			case 'WaveingModifier':
-				explainString = "Modifier used to make notes come faster and slower to target";
+				return "Modifier used to make notes come faster and slower to target";
 			case 'JumpModifier':
-				explainString = "Modifier used to make notes and target jump";
+				return "Modifier used to make notes and target jump";
 			case 'WaveXModifier':
-				explainString = "Modifier similar to drunkX but this one will simulate a true wave in X (don't affect the notes)";
+				return "Modifier similar to drunkX but this one will simulate a true wave in X (don't affect the notes)";
 			case 'WaveYModifier':
-				explainString = "Modifier similar to drunkY but this one will simulate a true wave in Y (don't affect the notes)";
+				return "Modifier similar to drunkY but this one will simulate a true wave in Y (don't affect the notes)";
 			case 'WaveZModifier':
-				explainString = "Modifier similar to drunkZ but this one will simulate a true wave in Z (don't affect the notes)";
+				return "Modifier similar to drunkZ but this one will simulate a true wave in Z (don't affect the notes)";
 			case 'TimeStopModifier':
-				explainString = "Modifier used to stop the notes at the top/bottom part of your screen to make it hard to read";
+				return "Modifier used to stop the notes at the top/bottom part of your screen to make it hard to read";
 			case 'StrumAngleModifier':
-				explainString = "Modifier combined between strumRotate, Confusion, IncomingAngleY, making a rotation easily";
+				return "Modifier combined between strumRotate, Confusion, IncomingAngleY, making a rotation easily";
 			case 'JumpTargetModifier':
-				explainString = "Modifier similar to jump but only target aplied";
+				return "Modifier similar to jump but only target aplied";
 			case 'JumpNotesModifier':
-				explainString = "Modifier similar to jump but only notes aplied";
+				return "Modifier similar to jump but only notes aplied";
 			case 'EaseXModifier':
-				explainString = "Modifier used to make notes go left to right on the screen";
+				return "Modifier used to make notes go left to right on the screen";
 			case 'EaseYModifier':
-				explainString = "Modifier used to make notes go up to down on the screen";
+				return "Modifier used to make notes go up to down on the screen";
 			case 'EaseZModifier':
-				explainString = "Modifier used to make notes go far to near right on the screen";
+				return "Modifier used to make notes go far to near right on the screen";
 			case 'HiddenModifier':
-				explainString = "Modifier used to make an alpha boost on notes";
+				return "Modifier used to make an alpha boost on notes";
 			case 'SuddenModifier':
-				explainString = "Modifier used to make an alpha brake on notes";
+				return "Modifier used to make an alpha brake on notes";
 			case 'VanishModifier':
-				explainString = "Modifier fushion between sudden and hidden";
+				return "Modifier fushion between sudden and hidden";
 			case 'SkewModifier':
-				explainString = "Modifier used to make note effects (skew)";
+				return "Modifier used to make note effects (skew)";
 			case 'SkewXModifier':
-				explainString = "Modifier based from SkewModifier but only in X";
+				return "Modifier based from SkewModifier but only in X";
 			case 'SkewYModifier':
-				explainString = "Modifier based from SkewModifier but only in Y";
+				return "Modifier based from SkewModifier but only in Y";
 			case 'NotesModifier':
-				explainString = "Modifier based from other modifiers but only affects notes and no targets";
+				return "Modifier based from other modifiers but only affects notes and no targets";
 			case 'LanesModifier':
-				explainString = "Modifier based from other modifiers but only affects targets and no notes";
+				return "Modifier based from other modifiers but only affects targets and no notes";
 			case 'StrumsModifier':
-				explainString = "Modifier based from other modifiers but affects targets and notes";
+				return "Modifier based from other modifiers but affects targets and notes";
 			case 'TanDrunkXModifier':
-				explainString = "Modifier similar to drunk but uses tan instead of sin in X";
+				return "Modifier similar to drunk but uses tan instead of sin in X";
 			case 'TanDrunkYModifier':
-				explainString = "Modifier similar to drunk but uses tan instead of sin in Y";
+				return "Modifier similar to drunk but uses tan instead of sin in Y";
 			case 'TanDrunkZModifier':
-				explainString = "Modifier similar to drunk but uses tan instead of sin in Z";
+				return "Modifier similar to drunk but uses tan instead of sin in Z";
 			case 'TanWaveXModifier':
-				explainString = "Modifier similar to wave but uses tan instead of sin in X";
+				return "Modifier similar to wave but uses tan instead of sin in X";
 			case 'TanWaveYModifier':
-				explainString = "Modifier similar to wave but uses tan instead of sin in Y";
+				return "Modifier similar to wave but uses tan instead of sin in Y";
 			case 'TanWaveZModifier':
-				explainString = "Modifier similar to wave but uses tan instead of sin in Z";
+				return "Modifier similar to wave but uses tan instead of sin in Z";
 			case 'TwirlModifier':
-				explainString = "Modifier that makes the notes incoming rotating in a circle in X";
+				return "Modifier that makes the notes incoming rotating in a circle in X";
 			case 'RollModifier':
-				explainString = "Modifier that makes the notes incoming rotating in a circle in Y";
+				return "Modifier that makes the notes incoming rotating in a circle in Y";
 			case 'BlinkModifier':
-				explainString = "Modifier that makes the notes alpha go to 0 and go back to 1 constantly";
+				return "Modifier that makes the notes alpha go to 0 and go back to 1 constantly";
 			case 'CosecantXModifier':
-				explainString = "Modifier similar to TanDrunk but uses cosecant instead of tan in X";
+				return "Modifier similar to TanDrunk but uses cosecant instead of tan in X";
 			case 'CosecantYModifier':
-				explainString = "Modifier similar to TanDrunk but uses cosecant instead of tan in Y";
+				return "Modifier similar to TanDrunk but uses cosecant instead of tan in Y";
 			case 'CosecantZModifier':
-				explainString = "Modifier similar to TanDrunk but uses cosecant instead of tan in Z";
+				return "Modifier similar to TanDrunk but uses cosecant instead of tan in Z";
 			case 'TanDrunkAngleModifier':
-				explainString = "Modifier similar to TanDrunk but in angle";
+				return "Modifier similar to TanDrunk but in angle";
 			case 'DrunkAngleModifier':
-				explainString = "Modifier similar to Drunk but in angle";
+				return "Modifier similar to Drunk but in angle";
 			case 'WaveAngleModifier':
-				explainString = "Modifier similar to Wave but in angle";
+				return "Modifier similar to Wave but in angle";
 			case 'TanWaveAngleModifier':
-				explainString = "Modifier similar to TanWave but in angle";
+				return "Modifier similar to TanWave but in angle";
 			case 'ShakyNotesModifier':
-				explainString = "Modifier used to make notes shake in their on possition";
+				return "Modifier used to make notes shake in their on possition";
 			case 'TordnadoModifier':
-				explainString = "Modifier similar to invertSine, but notes will do their own path instead";
+				return "Modifier similar to invertSine, but notes will do their own path instead";
 			case 'ArrowPath':
-				explainString = "This modifier its able to make custom paths for the mods so this should be a very helpful tool";
+				return "This modifier its able to make custom paths for the mods so this should be a very helpful tool";
 		}
-
-		return explainString;
+		return "Unknown Modifer";
 	}
 
-	function findCorrectModData(data:Array<Dynamic>) // the data is stored at different indexes based on the type (maybe should have kept them the same)
+	public function findCorrectModData(data:Array<Dynamic>) // the data is stored at different indexes based on the type (maybe should have kept them the same)
 	{
 		switch (data[EVENT_TYPE]) {
 			case "ease":
@@ -1812,7 +1809,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		return null;
 	}
 
-	function setCorrectModData(data:Array<Dynamic>, dataStr:String) {
+	public function setCorrectModData(data:Array<Dynamic>, dataStr:String) {
 		switch (data[EVENT_TYPE]) {
 			case "ease":
 				data[EVENT_DATA][EVENT_EASEDATA] = dataStr;
@@ -1823,7 +1820,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 	}
 
 	// TODO: fix this shit
-	function convertModData(data:Array<Dynamic>, newType:String) {
+	public function convertModData(data:Array<Dynamic>, newType:String) {
 		switch (data[EVENT_TYPE]) // convert stuff over i guess
 		{
 			case "ease":
@@ -1852,7 +1849,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		return data;
 	}
 
-	function updateEventModData(shitToUpdate:String, isMod:Bool) {
+	public function updateEventModData(shitToUpdate:String, isMod:Bool) {
 		var data = getCurrentEventInData();
 		if (data != null) {
 			var dataStr:String = findCorrectModData(data);
@@ -1865,7 +1862,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		}
 	}
 
-	function getEventModData(isMod:Bool):String {
+	public function getEventModData(isMod:Bool):String {
 		var data = getCurrentEventInData();
 		if (data != null) {
 			var dataStr:String = findCorrectModData(data);
@@ -1875,7 +1872,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		return "";
 	}
 
-	function stringifyEventModData(dataSplit:Array<String>):String {
+	public function stringifyEventModData(dataSplit:Array<String>):String {
 		var dataStr = "";
 		for (i in 0...dataSplit.length) {
 			dataStr += dataSplit[i];
@@ -1885,7 +1882,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		return dataStr;
 	}
 
-	function addNewModData() {
+	public function addNewModData() {
 		var data = getCurrentEventInData();
 		if (data != null) {
 			var dataStr:String = findCorrectModData(data);
@@ -1895,7 +1892,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		return data;
 	}
 
-	function removeModData() {
+	public function removeModData() {
 		var data = getCurrentEventInData();
 		if (data != null) {
 			if (selectedEventDataStepper.max > 0) // dont remove if theres only 1
@@ -1910,24 +1907,24 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		return data;
 	}
 
-	var eventTimeStepper:FlxUINumericStepper;
-	var eventModInputText:FlxUIInputText;
-	var eventValueInputText:FlxUIInputText;
-	var eventDataInputText:FlxUIInputText;
-	var eventModifierDropDown:FlxUIDropDownMenu;
-	var eventTypeDropDown:FlxUIDropDownMenu;
-	var eventEaseInputText:FlxUIInputText;
-	var eventTimeInputText:FlxUIInputText;
-	var selectedEventDataStepper:FlxUINumericStepper;
-	var repeatCheckbox:FlxUICheckBox;
-	var repeatBeatGapStepper:FlxUINumericStepper;
-	var repeatCountStepper:FlxUINumericStepper;
-	var easeDropDown:FlxUIDropDownMenu;
-	var subModDropDown:FlxUIDropDownMenu;
-	var builtInModDropDown:FlxUIDropDownMenu;
-	var stackedEventStepper:FlxUINumericStepper;
+	public var eventTimeStepper:FlxUINumericStepper;
+	public var eventModInputText:FlxUIInputText;
+	public var eventValueInputText:FlxUIInputText;
+	public var eventDataInputText:FlxUIInputText;
+	public var eventModifierDropDown:FlxUIDropDownMenu;
+	public var eventTypeDropDown:FlxUIDropDownMenu;
+	public var eventEaseInputText:FlxUIInputText;
+	public var eventTimeInputText:FlxUIInputText;
+	public var selectedEventDataStepper:FlxUINumericStepper;
+	public var repeatCheckbox:FlxUICheckBox;
+	public var repeatBeatGapStepper:FlxUINumericStepper;
+	public var repeatCountStepper:FlxUINumericStepper;
+	public var easeDropDown:FlxUIDropDownMenu;
+	public var subModDropDown:FlxUIDropDownMenu;
+	public var builtInModDropDown:FlxUIDropDownMenu;
+	public var stackedEventStepper:FlxUINumericStepper;
 
-	function setupEventUI() {
+	public function setupEventUI() {
 		var tab_group = new FlxUI(null, UI_box);
 		tab_group.name = "Events";
 
@@ -2152,7 +2149,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		UI_box.addGroup(tab_group);
 	}
 
-	function getCurrentEventInData() // find stored data to match with highlighted event
+	public function getCurrentEventInData() // find stored data to match with highlighted event
 	{
 		if (highlightedEvent == null)
 			return null;
@@ -2165,7 +2162,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		return null;
 	}
 
-	function getMaxEventModDataLength() // used for the stepper so it doesnt go over max and break something
+	public function getMaxEventModDataLength() // used for the stepper so it doesnt go over max and break something
 	{
 		var data = getCurrentEventInData();
 		if (data != null) {
@@ -2176,26 +2173,26 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		return 0;
 	}
 
-	function updateSelectedEventDataStepper() // update the stepper
+	public function updateSelectedEventDataStepper() // update the stepper
 	{
 		selectedEventDataStepper.max = getMaxEventModDataLength();
 		if (selectedEventDataStepper.value > selectedEventDataStepper.max)
 			selectedEventDataStepper.value = 0;
 	}
 
-	function updateStackedEventDataStepper() // update the stepper
+	public function updateStackedEventDataStepper() // update the stepper
 	{
 		stackedEventStepper.max = stackedHighlightedEvents.length - 1;
 		stackedEventStepper.value = stackedEventStepper.max; // when you select an event, if theres stacked events it should be the one at the end of the list so just set it to the end
 	}
 
-	function getEventModIndex() {
+	public inline function getEventModIndex() {
 		return Math.floor(selectedEventDataStepper.value);
 	}
 
-	var eventTypes:Array<String> = ["ease", "set"];
+	public var eventTypes:Array<String> = ["ease", "set"];
 
-	function onSelectEvent(fromStackedEventStepper = false) {
+	public function onSelectEvent(fromStackedEventStepper = false) {
 		// update texts and stuff
 		updateSelectedEventDataStepper();
 		eventTimeStepper.value = Std.parseFloat(highlightedEvent[EVENT_DATA][EVENT_TIME]);
@@ -2220,7 +2217,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		dirtyUpdateEvents = true;
 	}
 
-	override function getEvent(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>) {
+	public override function getEvent(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>) {
 		if (id == FlxUINumericStepper.CHANGE_EVENT && (sender is FlxUINumericStepper)) {
 			var nums:FlxUINumericStepper = cast sender;
 			var wname = nums.name;
@@ -2257,9 +2254,9 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		}
 	}
 
-	var playfieldCountStepper:FlxUINumericStepper;
+	public var playfieldCountStepper:FlxUINumericStepper;
 
-	function setupPlayfieldUI() {
+	public function setupPlayfieldUI() {
 		var tab_group = new FlxUI(null, UI_box);
 		tab_group.name = "Playfields";
 
@@ -2272,9 +2269,9 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		UI_box.addGroup(tab_group);
 	}
 
-	var sliderRate:FlxUISlider;
+	public var sliderRate:FlxUISlider;
 
-	function setupEditorUI() {
+	public function setupEditorUI() {
 		var tab_group = new FlxUI(null, UI_box);
 		tab_group.name = "Editor";
 
@@ -2351,7 +2348,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		UI_box.addGroup(tab_group);
 	}
 
-	function addUI(tab_group:FlxUI, name:String, ui:FlxSprite, title:String = "", body:String = "", anchor:Anchor = null) {
+	public function addUI(tab_group:FlxUI, name:String, ui:FlxSprite, title:String = "", body:String = "", anchor:Anchor = null) {
 		tooltips.add(ui, {
 			title: title,
 			body: body,
@@ -2371,19 +2368,19 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		tab_group.add(ui);
 	}
 
-	function centerXToObject(obj1:FlxSprite, obj2:FlxSprite) // snap second obj to first
+	public inline function centerXToObject(obj1:FlxSprite, obj2:FlxSprite) // snap second obj to first
 	{
 		obj2.x = obj1.x + (obj1.width / 2) - (obj2.width / 2);
 	}
 
-	function makeLabel(obj:FlxSprite, offsetX:Float, offsetY:Float, textStr:String) {
+	public function makeLabel(obj:FlxSprite, offsetX:Float, offsetY:Float, textStr:String) {
 		var text = new FlxText(0, obj.y + offsetY, 0, textStr);
 		centerXToObject(obj, text);
 		text.x += offsetX;
 		return text;
 	}
 
-	var _file:FileReference;
+	public var _file:FileReference;
 
 	public function saveModchartJson(?instance:ModchartMusicBeatState = null):Void {
 		if (instance == null)
@@ -2435,7 +2432,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 }
 
 class ModchartEditorExitSubstate extends MusicBeatSubstate {
-	var exitFunc:Void->Void;
+	public var exitFunc:Void->Void;
 
 	override public function new(funcOnExit:Void->Void) {
 		exitFunc = funcOnExit;

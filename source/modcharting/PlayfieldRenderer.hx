@@ -332,7 +332,7 @@ class PlayfieldRenderer extends FlxSprite //extending flxsprite just so i can ed
 
         strumGroup.members[noteData.index].draw();
     }
-    private function drawNote(noteData:NotePositionData)
+    public function drawNote(noteData:NotePositionData)
     {
         if (noteData.alpha <= 0)
             return;

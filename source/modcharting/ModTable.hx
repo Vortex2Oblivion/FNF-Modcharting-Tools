@@ -10,13 +10,13 @@ import game.Conductor;
 class ModTable
 {
     public var modifiers:Map<String, Modifier> = new Map<String, Modifier>();
-    private var instance:ModchartMusicBeatState = null;
-    private var renderer:PlayfieldRenderer = null;
+    public var instance:ModchartMusicBeatState = null;
+    public var renderer:PlayfieldRenderer = null;
 
     //The table is used to precalculate all the playfield and lane checks on each modifier,
     //so it should end up with a lot less loops and if checks each frame
     //index table by playfield, then lane, and then loop through each modifier
-    private var table:Array<Array<Array<Modifier>>> = [];
+    public var table:Array<Array<Array<Modifier>>> = [];
 
     public function new(instance:ModchartMusicBeatState, renderer:PlayfieldRenderer)
     {

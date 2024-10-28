@@ -6,12 +6,12 @@ import game.Conductor;
 
 class ModchartEventManager
 {
-    private var renderer:PlayfieldRenderer;
+    public var renderer:PlayfieldRenderer;
     public function new(renderer:PlayfieldRenderer)
     {
         this.renderer = renderer;
     }
-    private var events:Array<ModchartEvent> = [];
+    public var events:Array<ModchartEvent> = [];
     public function update(elapsed:Float)
     {
         if (events.length > 1)
@@ -36,12 +36,11 @@ class ModchartEventManager
 		}
         Modifier.beat = ((Conductor.songPosition *0.001)*(Conductor.bpm/60));
     }
-    public function addEvent(beat:Float, func:Array<String>->Void, args:Array<String>)
+    public inline function addEvent(beat:Float, func:Array<String>->Void, args:Array<String>)
     {
-        var time = ModchartUtil.getTimeFromBeat(beat);
-        events.push(new ModchartEvent(time, func, args));
+        events.push(new ModchartEvent(ModchartUtil.getTimeFromBeat(beat), func, args));
     }
-    public function clearEvents()
+    public inline  function clearEvents()
     {
         events = [];
     }

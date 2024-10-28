@@ -360,7 +360,7 @@ class ModchartFile
 
         }
     }
-    private function addEvent(i:Array<Dynamic>, ?beatOffset:Float = 0)
+    public function addEvent(i:Array<Dynamic>, ?beatOffset:Float = 0)
     {
         switch(i[EVENT_TYPE])
         {
@@ -409,7 +409,7 @@ class CustomModifierScript
         }
         init();
     }
-    private function init()
+    public function init()
     {
         if (interp == null)
             return;

@@ -151,7 +151,7 @@ class BezierPathTween extends FlxTween
     }
 }
 
-private typedef BezierTweenProperty =
+typedef BezierTweenProperty =
 {
 	object:Dynamic,
 	field:String,
