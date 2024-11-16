@@ -40,7 +40,7 @@ class ModchartEventManager
     {
         events.push(new ModchartEvent(ModchartUtil.getTimeFromBeat(beat), func, args));
     }
-    public inline  function clearEvents()
+    public inline function clearEvents()
     {
         events = [];
     }

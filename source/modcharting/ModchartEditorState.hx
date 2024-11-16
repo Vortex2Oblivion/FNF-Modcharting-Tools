@@ -1,5 +1,6 @@
 package modcharting;
 
+import game.SoundGroup;
 import lime.utils.Assets;
 import flixel.graphics.frames.FlxFramesCollection;
 import flixel.util.FlxAxes;
@@ -79,17 +80,17 @@ class ModchartEditorEvent extends FlxSprite {
 		super(-300, 0);
 		#if LEATHER
 		frames = Paths.getSparrowAtlas("ui skins/" + utilities.Options.getData("uiSkin") + "/arrows/default", 'shared');
-        animation.addByPrefix('note', 'left0');
+		animation.addByPrefix('note', 'left0');
 		#else
-        frames = Paths.getSparrowAtlas('NOTE_assets');
-        animation.addByPrefix('note', 'purple0');
+		frames = Paths.getSparrowAtlas('NOTE_assets');
+		animation.addByPrefix('note', 'purple0');
 		#end
 		// makeGraphic(48, 48);
 
-        animation.play('note');
-        setGraphicSize(ModchartEditorState.gridSize, ModchartEditorState.gridSize);
-        updateHitbox();
-        antialiasing = true;
+		animation.play('note');
+		setGraphicSize(ModchartEditorState.gridSize, ModchartEditorState.gridSize);
+		updateHitbox();
+		antialiasing = true;
 	}
 
 	public function getBeatTime():Float {
@@ -289,10 +290,43 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		ArrowPath
 	];
 	public static var easeList:Array<String> = [
-		"backIn", "backInOut", "backOut", "bounceIn", "bounceInOut", "bounceOut", "circIn", "circInOut", "circOut", "cubeIn", "cubeInOut", "cubeOut",
-		"elasticIn", "elasticInOut", "elasticOut", "expoIn", "expoInOut", "expoOut", "linear", "quadIn", "quadInOut", "quadOut", "quartIn", "quartInOut",
-		"quartOut", "quintIn", "quintInOut", "quintOut", "sineIn", "sineInOut", "sineOut", "smoothStepIn", "smoothStepInOut", "smoothStepOut",
-		"smootherStepIn", "smootherStepInOut", "smootherStepOut",
+		"backIn",
+		"backInOut",
+		"backOut",
+		"bounceIn",
+		"bounceInOut",
+		"bounceOut",
+		"circIn",
+		"circInOut",
+		"circOut",
+		"cubeIn",
+		"cubeInOut",
+		"cubeOut",
+		"elasticIn",
+		"elasticInOut",
+		"elasticOut",
+		"expoIn",
+		"expoInOut",
+		"expoOut",
+		"linear",
+		"quadIn",
+		"quadInOut",
+		"quadOut",
+		"quartIn",
+		"quartInOut",
+		"quartOut",
+		"quintIn",
+		"quintInOut",
+		"quintOut",
+		"sineIn",
+		"sineInOut",
+		"sineOut",
+		"smoothStepIn",
+		"smoothStepInOut",
+		"smoothStepOut",
+		"smootherStepIn",
+		"smootherStepInOut",
+		"smootherStepOut",
 	];
 
 	// used for indexing
@@ -327,7 +361,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 	public var playerStrums:FlxTypedGroup<StrumNoteType>;
 	public var unspawnNotes:Array<Note> = [];
 	public var loadedNotes:Array<Note> = []; // stored notes from the chart that unspawnNotes can copy from
-	public var vocals:FlxSound;
+	public var vocals:SoundGroup;
 	#if (PSYCH && PSYCHVERSION >= "0.7.3")
 	public var opponentVocals:FlxSound;
 	#end
@@ -336,6 +370,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 
 	public var grid:FlxBackdrop;
 	public var line:FlxSprite;
+
 	var beatTexts:Array<FlxText> = [];
 
 	public var eventSprites:FlxTypedGroup<ModchartEditorEvent>;
@@ -413,7 +448,8 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		#end
 
 		if (PlayState.SONG == null)
-			PlayState.SONG = Song.loadFromJson('tutorial');
+			PlayState.SONG = game.SongLoader.loadFromJson('normal', 'tutorial');
+
 		Conductor.mapBPMChanges(PlayState.SONG);
 		#if (PSYCH && PSYCHVERSION >= "0.7")
 		Conductor.bpm = PlayState.SONG.bpm;
@@ -689,8 +725,10 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 				inst.pause();
 				if (vocals != null)
 					vocals.pause();
-				#if (PSYCH && PSYCHVERSION >= "0.7.3") if (opponentVocals != null)
-					opponentVocals.pause(); #end
+				#if (PSYCH && PSYCHVERSION >= "0.7.3")
+				if (opponentVocals != null)
+					opponentVocals.pause();
+				#end
 				inst.time += (FlxG.mouse.wheel * Conductor.stepCrochet * 0.8 * shiftThing);
 				if (vocals != null) {
 					vocals.pause();
@@ -711,8 +749,10 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 				inst.pause();
 				if (vocals != null)
 					vocals.pause();
-				#if (PSYCH && PSYCHVERSION >= "0.7.3") if (opponentVocals != null)
-					opponentVocals.pause(); #end
+				#if (PSYCH && PSYCHVERSION >= "0.7.3")
+				if (opponentVocals != null)
+					opponentVocals.pause();
+				#end
 				inst.time += (Conductor.crochet * 4 * shiftThing);
 				dirtyUpdateNotes = true;
 				dirtyUpdateEvents = true;
@@ -721,8 +761,10 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 				inst.pause();
 				if (vocals != null)
 					vocals.pause();
-				#if (PSYCH && PSYCHVERSION >= "0.7.3") if (opponentVocals != null)
-					opponentVocals.pause(); #end
+				#if (PSYCH && PSYCHVERSION >= "0.7.3")
+				if (opponentVocals != null)
+					opponentVocals.pause();
+				#end
 				inst.time -= (Conductor.crochet * 4 * shiftThing);
 				dirtyUpdateNotes = true;
 				dirtyUpdateEvents = true;
@@ -803,7 +845,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 				#else
 				var strum = strumLineNotes.members[daNote.noteData + (daNote.mustPress ? NoteMovement.keyCount : 0)];
 				strum.playAnim("confirm", true);
-                strum.resetAnim = 0.15;
+				strum.resetAnim = 0.15;
 				if (daNote.isSustainNote && !daNote.animation.curAnim.name.endsWith('end')) {
 					strum.resetAnim = 0.3;
 				}
@@ -903,8 +945,10 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 				inst.stop();
 				if (vocals != null)
 					vocals.stop();
-				#if (PSYCH && PSYCHVERSION >= "0.7.3") if (opponentVocals != null)
-					opponentVocals.stop(); #end
+				#if (PSYCH && PSYCHVERSION >= "0.7.3")
+				if (opponentVocals != null)
+					opponentVocals.stop();
+				#end
 
 				#if (PSYCH && PSYCHVERSION >= "0.7")
 				backend.StageData.loadDirectory(PlayState.SONG);
@@ -1076,6 +1120,8 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		}
 	}
 
+	public var addedVocals:Array<String> = [];
+
 	public function generateSong(songData:SwagSong):Void {
 		var songData = PlayState.SONG;
 		Conductor.bpm = songData.bpm;
@@ -1085,15 +1131,26 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		var dadVocals:String = getVocalFromCharacter(PlayState.SONG.player2);
 		#end
 
-		vocals = new FlxSound();
+		vocals = new SoundGroup();
 		#if (PSYCH && PSYCHVERSION >= "0.7.3")
 		opponentVocals = new FlxSound();
 		#end
 		try {
 			if (PlayState.SONG.needsVoices) {
 				#if LEATHER
-				vocals.loadEmbedded(Paths.voices(PlayState.SONG.song,
-					(PlayState.SONG.specialAudioName == null ? PlayState.storyDifficultyStr.toLowerCase() : PlayState.SONG.specialAudioName)));
+				for (character in [
+					'player',
+					'opponent',
+					PlayState.boyfriend.curCharacter,
+					PlayState.dad.curCharacter
+				]) {
+					var soundPath:String = Paths.voices(PlayState.SONG.song, PlayState.SONG.specialAudioName ?? PlayState.storyDifficultyStr.toLowerCase(),
+						character, PlayState.boyfriend.curCharacter);
+					if (!addedVocals.contains(soundPath)) {
+						vocals.add(new FlxSound().loadEmbedded(soundPath));
+						addedVocals.push(soundPath);
+					}
+				}
 				#elseif ((PSYCH && !(PSYCHVERSION >= "0.7")) || !LEATHER)
 				vocals.loadEmbedded(Paths.voices(PlayState.SONG.song));
 				#end
@@ -1110,7 +1167,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 			}
 		}
 
-		FlxG.sound.list.add(vocals);
+		// FlxG.sound.list.add(vocals);
 		// vocals.pitch = playbackRate;
 		#if (PSYCH && PSYCHVERSION >= "0.7.3")
 		FlxG.sound.list.add(opponentVocals);
@@ -1118,8 +1175,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 
 		inst = new FlxSound();
 		try {
-			inst.loadEmbedded(Paths.inst(PlayState.SONG.song,
-				(PlayState.SONG.specialAudioName == null ? PlayState.storyDifficultyStr.toLowerCase() : PlayState.SONG.specialAudioName)));
+			inst.loadEmbedded(Paths.inst(PlayState.SONG.song, PlayState.SONG.specialAudioName ?? PlayState.storyDifficultyStr.toLowerCase()));
 		}
 		FlxG.sound.list.add(inst);
 
@@ -1189,7 +1245,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 					swagNote.noteType = editors.ChartingState.noteTypeList[songNotes[3]]; // Backward compatibility + compatibility with Week 7 charts
 				#end
 				#elseif LEATHER
-				var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote, false, 0, songNotes[4], null, [0], gottaHitNote);
+				var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote, false, 0, songNotes[4] ?? "default", null, [0], gottaHitNote);
 				swagNote.sustainLength = songNotes[2];
 				#end
 
@@ -1329,8 +1385,8 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 			#if LEATHER
 			var babyArrow:StrumNote = new StrumNote(0, strumLine.y, i, null, null, null, usedKeyCount);
 
-			babyArrow.frames = Assets.exists(Paths.image("ui skins/" + PlayState.SONG.ui_Skin + "/arrows/strums")) ? Paths.getSparrowAtlas('ui skins/' + PlayState.SONG.ui_Skin
-				+ "/arrows/strums") : Paths.getSparrowAtlas('ui skins/' + PlayState.SONG.ui_Skin + "/arrows/default");
+			babyArrow.frames = Assets.exists(Paths.image("ui skins/" + PlayState.SONG.ui_Skin + "/arrows/strums")) ? Paths.getSparrowAtlas('ui skins/'
+				+ PlayState.SONG.ui_Skin + "/arrows/strums") : Paths.getSparrowAtlas('ui skins/' + PlayState.SONG.ui_Skin + "/arrows/default");
 
 			babyArrow.antialiasing = ui_settings[3] == "true";
 
@@ -2288,8 +2344,10 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		songSlider.nameLabel.text = 'Song Time';
 		songSlider.callback = function(fuck:Float) {
 			vocals.time = inst.time;
-			#if (PSYCH && PSYCHVERSION >= "0.7.3") if (opponentVocals != null)
-				opponentVocals.time = inst.time; #end
+			#if (PSYCH && PSYCHVERSION >= "0.7.3")
+			if (opponentVocals != null)
+				opponentVocals.time = inst.time;
+			#end
 			Conductor.songPosition = inst.time;
 			dirtyUpdateEvents = true;
 			dirtyUpdateNotes = true;

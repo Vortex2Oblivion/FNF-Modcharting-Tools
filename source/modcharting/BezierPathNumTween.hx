@@ -1,4 +1,4 @@
-package flixel.tweens.misc;
+package modcharting;
 
 import flixel.tweens.FlxTween;
 

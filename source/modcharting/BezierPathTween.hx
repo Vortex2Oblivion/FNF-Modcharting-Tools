@@ -1,9 +1,10 @@
-package flixel.tweens.misc;
+package modcharting;
 
 import flixel.math.FlxPoint;
 import flixel.tweens.FlxTween.FlxTweenManager;
 import flixel.tweens.FlxTween.TweenOptions;
 import flixel.util.FlxDestroyUtil;
+import flixel.tweens.FlxTween;
 
 /**
  * A series of points which will determine a path from the

@@ -1,4 +1,4 @@
-package managers;
+package modcharting;
 
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
