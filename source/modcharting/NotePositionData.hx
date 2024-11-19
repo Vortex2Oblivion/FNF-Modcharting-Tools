@@ -5,7 +5,7 @@ import flixel.util.FlxPool;
 
 class NotePositionData implements IFlxDestroyable
 {
-    static var pool:FlxPool<NotePositionData> = new FlxPool(NotePositionData);
+    static var pool:FlxPool<NotePositionData> = new FlxPool(NotePositionData.new);
 
     public var x:Float;
     public var y:Float;

@@ -165,8 +165,8 @@ class PlayfieldRenderer extends FlxSprite //extending flxsprite just so i can ed
         if (ModchartUtil.getIsPixelStage(instance))
         {
             //work on pixel stages
-            strumScaleX = 1*PlayState.daPixelZoom;
-            strumScaleY = 1*PlayState.daPixelZoom;
+            strumScaleX *= 6;
+            strumScaleY *= 6;
         }
         var strumData:NotePositionData = NotePositionData.get();
         strumData.setupStrum(strumX, strumY, strumZ, i, strumScaleX, strumScaleY, strumSkewX, strumSkewY, pf);
@@ -205,8 +205,8 @@ class PlayfieldRenderer extends FlxSprite //extending flxsprite just so i can ed
         if (ModchartUtil.getIsPixelStage(instance))
         {
             //work on pixel stages
-            noteScaleX = 1*PlayState.daPixelZoom;
-            noteScaleY = 1*PlayState.daPixelZoom;
+            noteScaleX *= 6;
+            noteScaleY *= 6;
         }
 
         var noteData:NotePositionData = NotePositionData.get();

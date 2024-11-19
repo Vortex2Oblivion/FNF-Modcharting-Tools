@@ -41,7 +41,7 @@ import flixel.util.FlxDestroyUtil;
 import flixel.addons.transition.FlxTransitionableState;
 #if LEATHER
 import states.PlayState;
-import game.Song;
+import game.SongLoader;
 import game.Section.SwagSection;
 import game.Note;
 import ui.FlxScrollableDropDownMenu as FlxUIDropDownMenu; // im lazy sue me
@@ -78,22 +78,13 @@ class ModchartEditorEvent extends FlxSprite {
 	public function new(data:Array<Dynamic>) {
 		this.data = data;
 		super(-300, 0);
-		#if LEATHER
-		frames = Paths.getSparrowAtlas("ui skins/" + utilities.Options.getData("uiSkin") + "/arrows/default", 'shared');
-		animation.addByPrefix('note', 'left0');
-		#else
-		frames = Paths.getSparrowAtlas('NOTE_assets');
-		animation.addByPrefix('note', 'purple0');
-		#end
-		// makeGraphic(48, 48);
-
-		animation.play('note');
+		loadGraphic(Paths.gpuBitmap('charter/eventSprite'));
 		setGraphicSize(ModchartEditorState.gridSize, ModchartEditorState.gridSize);
 		updateHitbox();
-		antialiasing = true;
+		antialiasing = utilities.Options.getData("antialiasing");
 	}
 
-	public function getBeatTime():Float {
+	public inline function getBeatTime():Float {
 		return data[ModchartFile.EVENT_DATA][ModchartFile.EVENT_TIME];
 	}
 	#end
@@ -102,7 +93,7 @@ class ModchartEditorEvent extends FlxSprite {
 #if (PSYCH || LEATHER)
 class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.MusicBeatState #else MusicBeatState #end
 {
-	var hasUnsavedChanges:Bool = false;
+	public var hasUnsavedChanges:Bool = false;
 
 	override function closeSubState() {
 		persistentUpdate = true;
@@ -366,12 +357,12 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 	public var opponentVocals:FlxSound;
 	#end
 
-	var generatedMusic:Bool = false;
+	public var generatedMusic:Bool = false;
 
 	public var grid:FlxBackdrop;
 	public var line:FlxSprite;
 
-	var beatTexts:Array<FlxText> = [];
+	public var beatTexts:Array<FlxText> = [];
 
 	public var eventSprites:FlxTypedGroup<ModchartEditorEvent>;
 
@@ -380,20 +371,20 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 	public var highlight:FlxSprite;
 	public var debugText:FlxText;
 
-	var highlightedEvent:Array<Dynamic> = null;
-	var stackedHighlightedEvents:Array<Array<Dynamic>> = [];
+	public var highlightedEvent:Array<Dynamic> = null;
+	public var stackedHighlightedEvents:Array<Array<Dynamic>> = [];
 
-	var UI_box:FlxUITabMenu;
+	public var UI_box:FlxUITabMenu;
 
-	var textBlockers:Array<FlxUIInputText> = [];
+	public var textBlockers:Array<FlxUIInputText> = [];
 	var scrollBlockers:Array<FlxUIDropDownMenu> = [];
 
-	var playbackSpeed:Float = 1;
+	public var playbackSpeed:Float = 1;
 
-	var activeModifiersText:FlxText;
-	var selectedEventBox:FlxSprite;
+	public var activeModifiersText:FlxText;
+	public var selectedEventBox:FlxSprite;
 
-	var inst:FlxSound;
+	public var inst:FlxSound;
 
 	public var opponentMode:Bool = false;
 
@@ -1122,7 +1113,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 
 	public var addedVocals:Array<String> = [];
 
-	public function generateSong(songData:SwagSong):Void {
+	public function generateSong(songData:SongData):Void {
 		var songData = PlayState.SONG;
 		Conductor.bpm = songData.bpm;
 
