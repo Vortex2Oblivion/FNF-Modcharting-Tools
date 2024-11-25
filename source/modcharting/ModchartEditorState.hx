@@ -1385,11 +1385,11 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 				- (Std.parseFloat(mania_size[usedKeyCount - 1])))));
 			babyArrow.updateHitbox();
 
-			var animation_Base_Name = NoteVariables.Note_Count_Directions[usedKeyCount - 1][Std.int(Math.abs(i))].toLowerCase();
+			var animation_Base_Name = NoteVariables.maniaDirections[usedKeyCount - 1][Std.int(Math.abs(i))].toLowerCase();
 
 			babyArrow.animation.addByPrefix('static', animation_Base_Name + " static");
-			babyArrow.animation.addByPrefix('pressed', NoteVariables.Other_Note_Anim_Stuff[usedKeyCount - 1][i] + ' press', 24, false);
-			babyArrow.animation.addByPrefix('confirm', NoteVariables.Other_Note_Anim_Stuff[usedKeyCount - 1][i] + ' confirm', 24, false);
+			babyArrow.animation.addByPrefix('pressed', NoteVariables.animationDirections[usedKeyCount - 1][i] + ' press', 24, false);
+			babyArrow.animation.addByPrefix('confirm', NoteVariables.animationDirections[usedKeyCount - 1][i] + ' confirm', 24, false);
 
 			babyArrow.scrollFactor.set();
 
