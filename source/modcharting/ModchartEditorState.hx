@@ -33,7 +33,7 @@ import flixel.FlxG;
 import flixel.ui.FlxButton;
 import flixel.addons.ui.FlxUI;
 import flixel.addons.ui.FlxUICheckBox;
-import flixel.addons.ui.FlxUIInputText;
+import flixel.text.FlxInputText;
 import flixel.addons.ui.FlxUINumericStepper;
 import flixel.addons.ui.FlxUISlider;
 import flixel.addons.ui.FlxUITabMenu;
@@ -70,6 +70,7 @@ import modcharting.Modifier;
 import modcharting.ModchartFile;
 
 using StringTools;
+using utilities.BackgroundUtil;
 
 class ModchartEditorEvent extends FlxSprite {
 	#if (PSYCH || LEATHER)
@@ -376,7 +377,8 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 
 	public var UI_box:FlxUITabMenu;
 
-	public var textBlockers:Array<FlxUIInputText> = [];
+	public var textBlockers:Array<FlxInputText> = [];
+
 	var scrollBlockers:Array<FlxUIDropDownMenu> = [];
 
 	public var playbackSpeed:Float = 1;
@@ -425,7 +427,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		persistentUpdate = true;
 		persistentDraw = true;
 
-		var bg:FlxSprite = new FlxSprite(0, 0).loadGraphic(Paths.image('menuDesat'));
+		var bg:FlxSprite = new FlxSprite(0, 0).makeBackground(FlxColor.WHITE);
 		bg.setGraphicSize(Std.int(FlxG.width), Std.int(FlxG.height));
 		add(bg);
 
@@ -1138,7 +1140,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 					var soundPath:String = Paths.voices(PlayState.SONG.song, PlayState.SONG.specialAudioName ?? PlayState.storyDifficultyStr.toLowerCase(),
 						character, PlayState.boyfriend.curCharacter);
 					if (!addedVocals.contains(soundPath)) {
-						vocals.add(new FlxSound().loadEmbedded(soundPath));
+						vocals.add(FlxG.sound.list.add(new FlxSound().loadEmbedded(soundPath)));
 						addedVocals.push(soundPath);
 					}
 				}
@@ -1498,10 +1500,10 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 	}
 
 	var currentModifier:Array<Dynamic> = null;
-	var modNameInputText:FlxUIInputText;
-	var modClassInputText:FlxUIInputText;
+	var modNameInputText:FlxInputText;
+	var modClassInputText:FlxInputText;
 	var explainText:FlxText;
-	var modTypeInputText:FlxUIInputText;
+	var modTypeInputText:FlxInputText;
 	var playfieldStepper:FlxUINumericStepper;
 	var targetLaneStepper:FlxUINumericStepper;
 	var modifierDropDown:FlxUIDropDownMenu;
@@ -1601,10 +1603,10 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		removeModifier.scale.y *= 1.5;
 		removeModifier.updateHitbox();
 
-		modNameInputText = new FlxUIInputText(modifierDropDown.x + 300, modifierDropDown.y, 160, '', 8);
-		modClassInputText = new FlxUIInputText(modifierDropDown.x + 500, modifierDropDown.y, 160, '', 8);
+		modNameInputText = new FlxInputText(modifierDropDown.x + 300, modifierDropDown.y, 160, '', 8);
+		modClassInputText = new FlxInputText(modifierDropDown.x + 500, modifierDropDown.y, 160, '', 8);
 		explainText = new FlxText(modifierDropDown.x + 200, modifierDropDown.y + 200, 160, '', 8);
-		modTypeInputText = new FlxUIInputText(modifierDropDown.x + 700, modifierDropDown.y, 160, '', 8);
+		modTypeInputText = new FlxInputText(modifierDropDown.x + 700, modifierDropDown.y, 160, '', 8);
 		playfieldStepper = new FlxUINumericStepper(modifierDropDown.x + 900, modifierDropDown.y, 1, -1, -1, 100, 0);
 		targetLaneStepper = new FlxUINumericStepper(modifierDropDown.x + 900, modifierDropDown.y + 300, 1, -1, -1, 100, 0);
 
@@ -1955,13 +1957,13 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 	}
 
 	public var eventTimeStepper:FlxUINumericStepper;
-	public var eventModInputText:FlxUIInputText;
-	public var eventValueInputText:FlxUIInputText;
-	public var eventDataInputText:FlxUIInputText;
+	public var eventModInputText:FlxInputText;
+	public var eventValueInputText:FlxInputText;
+	public var eventDataInputText:FlxInputText;
 	public var eventModifierDropDown:FlxUIDropDownMenu;
 	public var eventTypeDropDown:FlxUIDropDownMenu;
-	public var eventEaseInputText:FlxUIInputText;
-	public var eventTimeInputText:FlxUIInputText;
+	public var eventEaseInputText:FlxInputText;
+	public var eventTimeInputText:FlxInputText;
 	public var selectedEventDataStepper:FlxUINumericStepper;
 	public var repeatCheckbox:FlxUICheckBox;
 	public var repeatBeatGapStepper:FlxUINumericStepper;
@@ -1995,8 +1997,8 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		centerXToObject(repeatCheckbox, repeatBeatGapStepper);
 		centerXToObject(repeatCheckbox, repeatCountStepper);
 
-		eventModInputText = new FlxUIInputText(25, 50, 160, '', 8);
-		eventModInputText.callback = function(str:String, str2:String) {
+		eventModInputText = new FlxInputText(25, 50, 160, '', 8);
+		eventModInputText.onTextChange.add((str:String, str2:String) -> {
 			updateEventModData(eventModInputText.text, true);
 			var data = getCurrentEventInData();
 			if (data != null) {
@@ -2005,9 +2007,9 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 				dirtyUpdateEvents = true;
 				hasUnsavedChanges = true;
 			}
-		};
-		eventValueInputText = new FlxUIInputText(25 + 200, 50, 160, '', 8);
-		eventValueInputText.callback = function(str:String, str2:String) {
+		});
+		eventValueInputText = new FlxInputText(25 + 200, 50, 160, '', 8);
+		eventValueInputText.onTextChange.add((str:String, str2:String) -> {
 			updateEventModData(eventValueInputText.text, false);
 			var data = getCurrentEventInData();
 			if (data != null) {
@@ -2016,7 +2018,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 				dirtyUpdateEvents = true;
 				hasUnsavedChanges = true;
 			}
-		};
+		});
 
 		selectedEventDataStepper = new FlxUINumericStepper(25 + 400, 50, 1, 0, 0, 0, 0);
 		selectedEventDataStepper.name = "selectedEventMod";
@@ -2055,9 +2057,9 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 			dirtyUpdateEvents = true;
 			hasUnsavedChanges = true;
 		});
-		eventEaseInputText = new FlxUIInputText(25 + 650, 50 + 100, 160, '', 8);
-		eventTimeInputText = new FlxUIInputText(25 + 650, 50, 160, '', 8);
-		eventEaseInputText.callback = function(str:String, str2:String) {
+		eventEaseInputText = new FlxInputText(25 + 650, 50 + 100, 160, '', 8);
+		eventTimeInputText = new FlxInputText(25 + 650, 50, 160, '', 8);
+		eventEaseInputText.onTextChange.add((str:String, str2:String) -> {
 			var data = getCurrentEventInData();
 			if (data != null) {
 				if (data[EVENT_TYPE] == 'ease')
@@ -2065,8 +2067,8 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 			}
 			dirtyUpdateEvents = true;
 			hasUnsavedChanges = true;
-		}
-		eventTimeInputText.callback = function(str:String, str2:String) {
+		});
+		eventTimeInputText.onTextChange.add((str:String, str2:String) -> {
 			var data = getCurrentEventInData();
 			if (data != null) {
 				if (data[EVENT_TYPE] == 'ease')
@@ -2074,12 +2076,12 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 			}
 			dirtyUpdateEvents = true;
 			hasUnsavedChanges = true;
-		}
+		});
 
 		easeDropDown = new FlxUIDropDownMenu(25, eventEaseInputText.y + 30, FlxUIDropDownMenu.makeStrIdLabelArray(easeList, true), function(ease:String) {
 			var easeStr = easeList[Std.parseInt(ease)];
 			eventEaseInputText.text = easeStr;
-			eventEaseInputText.callback("", ""); // make sure it updates
+			eventEaseInputText.onTextChange.dispatch("", ""); // make sure it updates
 			hasUnsavedChanges = true;
 		});
 		centerXToObject(eventEaseInputText, easeDropDown);
@@ -2088,7 +2090,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 			var modName = mods[Std.parseInt(mod)];
 			eventModInputText.text = modName;
 			updateSubModList(modName);
-			eventModInputText.callback("", ""); // make sure it updates
+			eventModInputText.onTextChange.dispatch("", ""); // make sure it updates
 			hasUnsavedChanges = true;
 		});
 		centerXToObject(eventModInputText, eventModifierDropDown);
@@ -2103,14 +2105,14 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 				eventModInputText.text = splitShit[0] + ":" + modName;
 			}
 
-			eventModInputText.callback("", ""); // make sure it updates
+			eventModInputText.onTextChange.dispatch("", ""); // make sure it updates
 			hasUnsavedChanges = true;
 		});
 		centerXToObject(eventModInputText, subModDropDown);
 
-		eventDataInputText = new FlxUIInputText(25, 300, 300, '', 8);
+		eventDataInputText = new FlxInputText(25, 300, 300, '', 8);
 		// eventDataInputText.resize(300, 300);
-		eventDataInputText.callback = function(str:String, str2:String) {
+		eventDataInputText.onTextChange.add((str:String, str2:String) -> {
 			var data = getCurrentEventInData();
 			if (data != null) {
 				data[EVENT_DATA][EVENT_EASEDATA] = eventDataInputText.text;
@@ -2118,7 +2120,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 				dirtyUpdateEvents = true;
 				hasUnsavedChanges = true;
 			}
-		};
+		});
 
 		var add:FlxButton = new FlxButton(0, selectedEventDataStepper.y + 30, 'Add', function() {
 			var data = addNewModData();

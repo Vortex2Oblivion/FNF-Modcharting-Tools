@@ -122,7 +122,7 @@ class Modifier
     public dynamic function noteDistMath(noteDist:Float, lane:Int, curPos:Float, pf:Int):Float { return noteDist; }
     public dynamic function setupSubValues() {}
 
-    public function checkPlayField(pf:Int):Bool //returns true if should display on current playfield
+    public inline function checkPlayField(pf:Int):Bool //returns true if should display on current playfield
     {
         return (playfield == -1) || (pf == playfield);
     }

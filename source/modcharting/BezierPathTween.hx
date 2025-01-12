@@ -26,7 +26,7 @@ class BezierPathTween extends FlxTween
 		super(Options, manager);
 	}
 
-	function tween(object:Dynamic, properties:Dynamic<Array<Float>>, duration:Float){
+	public function tween(object:Dynamic, properties:Dynamic<Array<Float>>, duration:Float){
 		#if FLX_DEBUG
 		if (object == null)
 			throw "Cannot tween variables of an object that is null.";
@@ -39,11 +39,6 @@ class BezierPathTween extends FlxTween
 		_propertyInfos = [];
 		start();
 		initializeVars();
-	}
-
-	override public function destroy():Void
-	{
-		super.destroy();
 	}
 
 	/**
