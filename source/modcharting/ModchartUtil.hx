@@ -22,7 +22,7 @@ using StringTools;
 
 class ModchartUtil
 {
-    public static function getDownscroll(instance:ModchartMusicBeatState)
+    public static inline function getDownscroll(instance:ModchartMusicBeatState)
     {
         //need to test each engine
         //not expecting all to work
@@ -48,7 +48,7 @@ class ModchartUtil
         return false;
         #end
     }
-    public static function getMiddlescroll(instance:ModchartMusicBeatState)
+    public static inline function getMiddlescroll(instance:ModchartMusicBeatState)
     {
         #if PSYCH
             #if (PSYCHVERSION >= "0.7")
@@ -62,7 +62,7 @@ class ModchartUtil
         return false;
         #end
     }
-    public static function getScrollSpeed(instance:PlayState)
+    public static inline function getScrollSpeed(instance:PlayState)
     {
         if (instance == null)
             return PlayState.SONG.speed;
@@ -79,7 +79,7 @@ class ModchartUtil
         #end
     }
 
-    public static function getIsPixelStage(instance:ModchartMusicBeatState)
+    public static inline function getIsPixelStage(instance:ModchartMusicBeatState)
     {
         if (instance == null)
             return false;
