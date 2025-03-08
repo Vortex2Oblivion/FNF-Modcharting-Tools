@@ -193,15 +193,10 @@ class PlayfieldRenderer extends FlxSprite // extending flxsprite just so i can e
 	}
 
 	public function getNoteCurPos(noteIndex:Int, strumTimeOffset:Float = 0) {
-		#if PSYCH
-		if (notes.members[noteIndex].isSustainNote && ModchartUtil.getDownscroll(instance))
-			strumTimeOffset -= Std.int(Conductor.stepCrochet / getCorrectScrollSpeed()); // psych does this to fix its sustains but that breaks the visuals so basically reverse it back to normal
-		#else
 		if (notes.members[noteIndex].isSustainNote && !ModchartUtil.getDownscroll(instance))
 			strumTimeOffset += Conductor.stepCrochet; // fix upscroll lol
-		#end
 		var distance = (Conductor.songPosition - notes.members[noteIndex].strumTime) + strumTimeOffset;
-		return distance * getCorrectScrollSpeed();
+		return distance * notes.members[noteIndex].speed;
 	}
 
 	public inline function getLane(noteIndex:Int) {
@@ -223,7 +218,7 @@ class PlayfieldRenderer extends FlxSprite // extending flxsprite just so i can e
 				notePositions.push(strumData);
 			}
 			for (i in 0...notes.members.length) {
-				var songSpeed = getCorrectScrollSpeed();
+				var songSpeed = notes.members[i].speed;
 
 				var lane = getLane(i);
 
@@ -345,7 +340,7 @@ class PlayfieldRenderer extends FlxSprite // extending flxsprite just so i can e
 		daNote.alpha = noteData.alpha;
 		daNote.mesh.alpha = daNote.alpha;
 
-		var songSpeed = getCorrectScrollSpeed();
+		var songSpeed = daNote.speed;
 		var lane = noteData.lane;
 
 		// makes the sustain match the center of the parent note when at weird angles
@@ -413,7 +408,7 @@ class PlayfieldRenderer extends FlxSprite // extending flxsprite just so i can e
 
 	public function getSustainPoint(noteData:NotePositionData, timeOffset:Float):NotePositionData {
 		var daNote:Note = notes.members[noteData.index];
-		var songSpeed:Float = getCorrectScrollSpeed();
+		var songSpeed:Float = notes.members[noteData.index].speed;
 		var lane:Int = noteData.lane;
 		var pf:Int = noteData.playfieldIndex;
 
