@@ -143,11 +143,6 @@ class PlayfieldRenderer extends FlxSprite // extending flxsprite just so i can e
 		var strumScaleY = NoteMovement.defaultScale[i];
 		var strumSkewX = NoteMovement.defaultSkewX[i];
 		var strumSkewY = NoteMovement.defaultSkewY[i];
-		if (ModchartUtil.getIsPixelStage(instance)) {
-			// work on pixel stages
-			strumScaleX *= 6;
-			strumScaleY *= 6;
-		}
 		var strumData:NotePositionData = NotePositionData.get();
 		strumData.setupStrum(strumX, strumY, strumZ, i, strumScaleX, strumScaleY, strumSkewX, strumSkewY, pf);
 		playfields[pf].applyOffsets(strumData);
@@ -178,12 +173,6 @@ class PlayfieldRenderer extends FlxSprite // extending flxsprite just so i can e
 		var noteSkewY = notes.members[noteIndex].skew.y;
 
 		var noteAlpha:Float = #if PSYCH notes.members[noteIndex].multAlpha; #else notes.members[noteIndex].isSustainNote ? 0.6 : 1; #end
-
-		if (ModchartUtil.getIsPixelStage(instance)) {
-			// work on pixel stages
-			noteScaleX *= 6;
-			noteScaleY *= 6;
-		}
 
 		var noteData:NotePositionData = NotePositionData.get();
 		noteData.setupNote(noteX, noteY, noteZ, lane, noteScaleX, noteScaleY, noteSkewX, noteSkewY, playfieldIndex, noteAlpha, curPos, noteDist,
@@ -350,7 +339,7 @@ class PlayfieldRenderer extends FlxSprite // extending flxsprite just so i can e
 			+ (daNote.width / 2)
 			+ ModchartUtil.getNoteOffsetX(daNote, instance),
 			noteData.y
-			+ (NoteMovement.arrowSizes[noteData.lane] / 2), noteData.z * 0.001),
+			+ ((NoteMovement.arrowSizes[noteData.lane] / 2)), noteData.z * 0.001),
 			ModchartUtil.defaultFOV * (Math.PI / 180),
 			-(daNote.width / 2), yOffsetThingy
 			- (NoteMovement.arrowSizes[noteData.lane] / 2));

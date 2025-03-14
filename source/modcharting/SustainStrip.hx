@@ -35,6 +35,7 @@ class SustainStrip extends FlxStrip
         super(0,0);
         loadGraphic(daNote.updateFramePixels());
         shader = daNote.shader;
+        antialiasing = daNote.antialiasing;
         for (uv in noteUV)
         {
             uvtData.push(uv);

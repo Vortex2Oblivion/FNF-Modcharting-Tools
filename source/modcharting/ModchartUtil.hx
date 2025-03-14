@@ -79,16 +79,6 @@ class ModchartUtil
         #end
     }
 
-    public static inline function getIsPixelStage(instance:ModchartMusicBeatState)
-    {
-        if (instance == null)
-            return false;
-        #if LEATHER
-        return PlayState.SONG.ui_Skin == 'pixel';
-        #else 
-        return PlayState.isPixelStage;
-        #end
-    }
 
     public static function getNoteOffsetX(daNote:Note, instance:ModchartMusicBeatState)
     {
