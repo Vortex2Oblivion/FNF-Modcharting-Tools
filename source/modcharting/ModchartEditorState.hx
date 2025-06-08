@@ -185,6 +185,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 	public static var modifierList:Array<Class<Modifier>> = [
 		// Basic Modifiers with no curpos math
 		XModifier,
+		XMModifier,
 		YModifier,
 		YDModifier,
 		ZModifier,
@@ -1699,6 +1700,8 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 				return "Modifier used to make notes jump a bit in their own Perspective poss";
 			case 'XModifier':
 				return "Moves notes and targets X";
+			case 'XMModifier':
+				return "Moves notes and targets X (Only activates in downscroll)";
 			case 'YModifier':
 				return "Moves notes and targets Y";
 			case 'YDModifier':
@@ -2378,6 +2381,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 				opponentVocals.volume = vol;
 		};
 		#end
+		
 
 		var resetSpeed:FlxButton = new FlxButton(sliderRate.x + 300, sliderRate.y, 'Reset', function() {
 			playbackSpeed = 1.0;
