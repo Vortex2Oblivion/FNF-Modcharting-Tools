@@ -1621,7 +1621,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 			case 'XModifier':
 				return "Moves notes and targets X";
 			case 'XMModifier':
-				return "Moves notes and targets X (Only activates in downscroll)";
+				return "Moves notes and targets X (Only activates in middlescroll)";
 			case 'YModifier':
 				return "Moves notes and targets Y";
 			case 'YDModifier':
