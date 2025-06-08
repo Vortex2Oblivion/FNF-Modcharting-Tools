@@ -1255,7 +1255,7 @@ class XMModifier extends Modifier
     {
         var daswitch = 0;
         if (instance != null)
-            if (ModchartUtil.getMiddlescroll(instance))
+            if (FlxG.state is ModchartEditorState ? cast(FlxG.state, ModchartEditorState).check_middlescroll.checked : ModchartUtil.getMiddlescroll(instance))
                 daswitch = 1;
         noteData.x += currentValue * daswitch;
     }

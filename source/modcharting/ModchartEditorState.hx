@@ -22,6 +22,7 @@ import flixel.util.FlxColor;
 import flixel.math.FlxMath;
 import flixel.FlxSprite;
 import flixel.util.FlxSort;
+import utilities.Options;
 #if (flixel < "5.3.0")
 import flixel.system.FlxSound;
 #else
@@ -82,7 +83,7 @@ class ModchartEditorEvent extends FlxSprite {
 		loadGraphic(Paths.gpuBitmap('charter/eventSprite'));
 		setGraphicSize(ModchartEditorState.gridSize, ModchartEditorState.gridSize);
 		updateHitbox();
-		antialiasing = utilities.Options.getData("antialiasing");
+		antialiasing = Options.getData("antialiasing");
 	}
 
 	public inline function getBeatTime():Float {
@@ -463,7 +464,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 
 		// yo poggars
 		if (SONG.ui_Skin == "default")
-			SONG.ui_Skin = utilities.Options.getData("uiSkin");
+			SONG.ui_Skin = Options.getData("uiSkin");
 
 		ui_settings = CoolUtil.coolTextFile(Paths.txt("ui skins/" + SONG.ui_Skin + "/config"));
 		mania_size = CoolUtil.coolTextFile(Paths.txt("ui skins/" + SONG.ui_Skin + "/maniasize"));
@@ -551,8 +552,13 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		line.color = FlxColor.BLACK;
 		add(line);
 
-		generateStaticArrows(0);
-		generateStaticArrows(1);
+		if (Options.getData("middlescroll")) {
+			generateStaticArrows(50, false);
+			generateStaticArrows(0.5, true);
+		} else {
+			generateStaticArrows(0, true);
+			generateStaticArrows(1);
+		}
 		NoteMovement.getDefaultStrumPosEditor(this);
 
 		// gridGap = FlxMath.remapToRange(Conductor.stepCrochet, 0, Conductor.stepCrochet, 0, gridSize); //idk why i even thought this was how i do it
@@ -1336,114 +1342,28 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.strumTime, Obj2.strumTime);
 	}
 
-	public function generateStaticArrows(player:Int):Void {
-		var usedKeyCount = 4;
-		#if LEATHER
-		usedKeyCount = PlayState.SONG.keyCount;
-		if (player == 1)
-			usedKeyCount = PlayState.SONG.playerKeyCount;
-		#else
-		usedKeyCount = 4;
-		#end
-
-		var strumLineX:Float = #if (PSYCH && PSYCHVERSION >= "0.7") ClientPrefs.data.middleScroll ? PlayState.STRUM_X_MIDDLESCROLL : PlayState.STRUM_X #elseif (PSYCH
-			&& PSYCHVERSION < "0.7") ClientPrefs.middleScroll ? PlayState.STRUM_X_MIDDLESCROLL : PlayState.STRUM_X #elseif LEATHER utilities.Options.getData("middlescroll") #end;
-
-		var TRUE_STRUM_X:Float = strumLineX;
-
-		#if PSYCH
-		if (PlayState.SONG.arrowSkin.contains('pixel')) {
-			#if (PSYCHVERSION >= "0.7")
-			TRUE_STRUM_X += (ClientPrefs.data.middleScroll ? 3 : 2);
-			#else
-			TRUE_STRUM_X += (ClientPrefs.middleScroll ? 3 : 2);
-			#end
-		}
-		#end
+	function generateStaticArrows(pos:Float, ?isPlayer:Bool = false, ?showReminders:Bool = true):Void {
+		var usedKeyCount:Int = isPlayer ? PlayState.SONG.playerKeyCount : PlayState.SONG.keyCount;
 
 		for (i in 0...usedKeyCount) {
-			// FlxG.log.add(i);
-			var targetAlpha:Float = 1;
-			if (player < 1) {
-				#if (PSYCH)
-				#if (PSYCHVERSION >= "0.7")
-				if (ClientPrefs.data.middleScroll)
-					targetAlpha = 0.35;
-				#else
-				if (ClientPrefs.middleScroll)
-					targetAlpha = 0.35;
-				#end
-				#end
-			}
-
-			#if LEATHER
-			var babyArrow:StrumNote = new StrumNote(0, strumLine.y, i, null, null, null, usedKeyCount);
-
-			babyArrow.frames = Assets.exists(Paths.image("ui skins/" + PlayState.SONG.ui_Skin + "/arrows/strums")) ? Paths.getSparrowAtlas('ui skins/'
-				+ PlayState.SONG.ui_Skin + "/arrows/strums") : Paths.getSparrowAtlas('ui skins/' + PlayState.SONG.ui_Skin + "/arrows/default");
-
-			babyArrow.antialiasing = ui_settings[3] == "true";
-
-			babyArrow.setGraphicSize(Std.int((babyArrow.width * Std.parseFloat(ui_settings[0])) * (Std.parseFloat(ui_settings[2])
-				- (Std.parseFloat(mania_size[usedKeyCount - 1])))));
-			babyArrow.updateHitbox();
-
-			var animation_Base_Name = NoteVariables.maniaDirections[usedKeyCount - 1][Std.int(Math.abs(i))].toLowerCase();
-
-			babyArrow.animation.addByPrefix('static', animation_Base_Name + " static");
-			babyArrow.animation.addByPrefix('pressed', NoteVariables.animationDirections[usedKeyCount - 1][i] + ' press', 24, false);
-			babyArrow.animation.addByPrefix('confirm', NoteVariables.animationDirections[usedKeyCount - 1][i] + ' confirm', 24, false);
-
+			var babyArrow:StrumNote = new StrumNote(0, strumLine.y, i, null, null, null, usedKeyCount, pos);
 			babyArrow.scrollFactor.set();
-
-			babyArrow.playAnim('static');
-
 			babyArrow.x += (babyArrow.width
 				+ (2 + Std.parseFloat(mania_gap[usedKeyCount - 1]))) * Math.abs(i)
 				+ Std.parseFloat(mania_offset[usedKeyCount - 1]);
 			babyArrow.y = strumLine.y - (babyArrow.height / 2);
-			babyArrow.x += 100 - ((usedKeyCount - 4) * 16) + (usedKeyCount >= 10 ? 30 : 0);
-			babyArrow.x += ((FlxG.width / 2) * player);
-			#elseif (PSYCH && PSYCHVERSION >= "0.7")
-			var babyArrow:StrumNote = new StrumNote(TRUE_STRUM_X, strumLine.y, i, player);
-			babyArrow.downScroll = ClientPrefs.data.downScroll;
-			babyArrow.alpha = targetAlpha;
-			#elseif (PSYCH && !(PSYCHVERSION >= "0.7"))
-			var babyArrow:StrumNote = new StrumNote(ClientPrefs.middleScroll ? PlayState.STRUM_X_MIDDLESCROLL : PlayState.STRUM_X, strumLine.y, i, player);
-			babyArrow.downScroll = ClientPrefs.downScroll;
-			babyArrow.alpha = targetAlpha;
-			#end
 
-			var middleScroll:Bool = false;
+			babyArrow.ID = i;
 
-			#if PSYCH
-			#if (PSYCHVERSION >= "0.7")
-			middleScroll = ClientPrefs.data.middleScroll;
-			#else
-			middleScroll = ClientPrefs.middleScroll;
-			#end
-			#elseif LEATHER
-			middleScroll = utilities.Options.getData("middlescroll");
-			#end
-
-			if (player == 1) {
+			if (isPlayer)
 				playerStrums.add(babyArrow);
-			} else {
-				#if PSYCH
-				if (middleScroll) {
-					babyArrow.x += 310;
-					if (i > 1) { // Up and Right
-						babyArrow.x += FlxG.width / 2 + 25;
-					}
-				}
-				#end
+			else
 				opponentStrums.add(babyArrow);
-			}
+
+			babyArrow.x += 100 - ((usedKeyCount - 4) * 16) + (usedKeyCount >= 10 ? 30 : 0);
+			babyArrow.x += ((FlxG.width / 2) * pos);
 
 			strumLineNotes.add(babyArrow);
-			#if PSYCH
-			babyArrow.postAddedToGroup();
-			#end
 		}
 	}
 
@@ -2308,6 +2228,12 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 
 	public var playfieldCountStepper:FlxUINumericStepper;
 
+	@:allow(modcharting.Modifier)
+	var check_middlescroll:FlxUICheckBox;
+
+	@:allow(modcharting.ModchartUtil)
+	var check_downscroll:FlxUICheckBox;
+
 	public function setupPlayfieldUI() {
 		var tab_group = new FlxUI(null, UI_box);
 		tab_group.name = "Playfields";
@@ -2381,7 +2307,58 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 				opponentVocals.volume = vol;
 		};
 		#end
-		
+
+		check_middlescroll = new FlxUICheckBox(check_mute_inst.x, check_mute_inst.y + 25, null, null, "Toggle Middlescroll (In Editor)", 100);
+		check_middlescroll.checked = Options.getData("middlescroll");
+		check_middlescroll.callback = function() {
+			playerStrums.clear();
+			opponentStrums.clear();
+			strumLineNotes.clear();
+			if (check_middlescroll.checked) {
+				generateStaticArrows(50, false);
+				generateStaticArrows(0.5, true);
+			} else {
+				generateStaticArrows(0, true);
+				generateStaticArrows(1);
+			}
+			NoteMovement.getDefaultStrumPosEditor(this);
+		};
+
+		check_downscroll = new FlxUICheckBox(check_mute_vocals.x, check_middlescroll.y, null, null, "Toggle Downscroll (In Editor)", 100);
+		check_downscroll.checked = Options.getData("downscroll");
+		check_downscroll.callback = function() {
+			#if (PSYCH)
+			strumLine = new FlxSprite(#if !(PSYCHVERSION >= "0.7") ClientPrefs.middleScroll #else ClientPrefs.data.middleScroll #end
+				?PlayState.STRUM_X_MIDDLESCROLL:PlayState.STRUM_X, 50).makeGraphic(FlxG.width, 10);
+			if (ModchartUtil.getDownscroll(this))
+				strumLine.y = FlxG.height - 150;
+			#else
+			strumLine = new FlxSprite(0, 100).makeGraphic(FlxG.width, 10);
+			#if LEATHER
+			if (ModchartUtil.getDownscroll(this))
+				strumLine.y = FlxG.height - 100;
+			#end
+			#end
+			playerStrums.clear();
+			opponentStrums.clear();
+			strumLineNotes.clear();
+			for(note in notes.members){
+				if (note.isSustainNote)
+					note.flipY = check_downscroll.checked;
+			}
+			for(note in unspawnNotes){
+				if (note.isSustainNote)
+					note.flipY = check_downscroll.checked;
+			}
+			if (check_middlescroll.checked) {
+				generateStaticArrows(50, false);
+				generateStaticArrows(0.5, true);
+			} else {
+				generateStaticArrows(0, true);
+				generateStaticArrows(1);
+			}
+			NoteMovement.getDefaultStrumPosEditor(this);
+		};
 
 		var resetSpeed:FlxButton = new FlxButton(sliderRate.x + 300, sliderRate.y, 'Reset', function() {
 			playbackSpeed = 1.0;
@@ -2398,6 +2375,9 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 
 		tab_group.add(check_mute_inst);
 		tab_group.add(check_mute_vocals);
+
+		tab_group.add(check_middlescroll);
+		tab_group.add(check_downscroll);
 		#if (PSYCH && PSYCHVERSION >= "0.7.3") tab_group.add(check_mute_opponent_vocals); #end
 
 		UI_box.addGroup(tab_group);
