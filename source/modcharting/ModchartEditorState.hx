@@ -431,7 +431,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		persistentDraw = true;
 
 		var bg:FlxSprite = new FlxSprite(0, 0).makeBackground(FlxColor.WHITE);
-		bg.setGraphicSize(Std.int(FlxG.width), Std.int(FlxG.height));
+		bg.screenCenter();
 		add(bg);
 
 		#if PSYCH
@@ -460,6 +460,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 
 		#if LEATHER
 		var SONG = PlayState.SONG;
+		MusicBeatState.windowNameSuffix = " - " + (SONG?.song ?? "Unknown Song") + " Modchart Editor";
 		if (Std.string(SONG.ui_Skin) == "null")
 			SONG.ui_Skin = SONG.stage == "school" || SONG.stage == "school-mad" || SONG.stage == "evil-school" ? "pixel" : "default";
 
@@ -531,6 +532,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 
 		for (i in 0...12) {
 			var beatText = new FlxText(-50, gridSize, 0, i + "", 32);
+			beatText.color = FlxColor.BLACK;
 			add(beatText);
 			beatTexts.push(beatText);
 		}
@@ -567,6 +569,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 
 		debugText = new FlxText(0, gridSize * 2, 0, "", 16);
 		debugText.alignment = FlxTextAlign.LEFT;
+		debugText.color = FlxColor.BLACK;
 
 		var tabs = [
 			{name: "Editor", label: 'Editor'},
@@ -982,9 +985,13 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 			+ " / "
 			+ Std.string(FlxMath.roundDecimal(inst.length / 1000, 2))
 			+ "\nBeat: "
-			+ Std.string(curDecBeat).substring(0, 4)
+			+ curBeat
 			+ "\nStep: "
 			+ curStep
+			+ "\nDec Beat:\n"
+			+ FlxMath.roundDecimal(curDecBeat, 2)
+			+ "\nDec Step:\n"
+			+ FlxMath.roundDecimal(curDecStep, 2)
 			+ "\n";
 
 		var leText = "Active Modifiers: \n";
