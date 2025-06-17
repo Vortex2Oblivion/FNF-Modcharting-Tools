@@ -103,7 +103,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 	}
 
 	#if LEATHER
-	public var curDecStep:Float = 0;
+	/*public var curDecStep:Float = 0;
 	public var curDecBeat:Float = 0;
 
 	override public function updateBeat():Void {
@@ -150,7 +150,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		curDecStep = lastChange.stepTime + shit;
 
 		updateBeat();
-	}
+	}*/
 
 	public var ui_settings:Array<String>;
 	public var mania_size:Array<String>;
@@ -203,6 +203,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		DrunkXModifier,
 		DrunkYModifier,
 		DrunkZModifier,
+		SchmovinDrunkXModifier,
 		DrunkAngleModifier,
 		TanDrunkXModifier,
 		TanDrunkYModifier,
@@ -1596,6 +1597,8 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 				return "Modifier used to do a wave at Y poss of the notes and targets";
 			case 'DrunkZModifier':
 				return "Modifier used to do a wave at Z (Far, Close) poss of the notes and targets";
+			case 'SchmovinDrunkXModifier':
+				return "Port of the drunk modifier from the schmovin modchart framework.";
 			case 'TipsyXModifier':
 				return "Modifier similar to DrunkX but don't affect notes poss";
 			case 'TipsyYModifier':
