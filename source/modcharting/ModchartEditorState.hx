@@ -460,7 +460,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 
 		#if LEATHER
 		var SONG = PlayState.SONG;
-		MusicBeatState.windowNameSuffix = " - " + (SONG?.song ?? "Unknown Song") + " Modchart Editor";
+		MusicBeatState.windowNameSuffix = " - " + (SONG?.song ?? "Unknown Song") + " (Modchart Editor)";
 		if (Std.string(SONG.ui_Skin) == "null")
 			SONG.ui_Skin = SONG.stage == "school" || SONG.stage == "school-mad" || SONG.stage == "evil-school" ? "pixel" : "default";
 
