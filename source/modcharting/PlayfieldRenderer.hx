@@ -75,7 +75,7 @@ class PlayfieldRenderer extends FlxSprite // extending flxsprite just so i can e
 		this.strumGroup = strumGroup;
 		this.notes = notes;
 		this.instance = instance;
-		if (Std.isOfType(instance, PlayState))
+		if (instance is PlayState)
 			playStateInstance = cast instance; // so it just casts once
 
 		strumGroup.visible = false; // drawing with renderer instead
@@ -303,8 +303,12 @@ class PlayfieldRenderer extends FlxSprite // extending flxsprite just so i can e
 			-(daNote.height / 2)) : new Vector3D(noteData.x, noteData.y, 0);
 		
 		if(daNote.isSustainNote){
-			thisNotePos.x += daNote.width;
-			daNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * daNote.speed;
+			if(!changeX){
+				thisNotePos.x += daNote.width;
+			}
+			if(!daNote.animation.curAnim.name.endsWith("end")){
+				noteData.scaleY *= Conductor.stepCrochet / 100 * 1.5 * daNote.speed;
+			}
 		}
 
 		noteData.x = thisNotePos.x;
