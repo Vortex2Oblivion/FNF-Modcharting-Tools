@@ -289,8 +289,9 @@ class PlayfieldRenderer extends FlxSprite // extending flxsprite just so i can e
 	}
 
 	public function drawNote(noteData:NotePositionData) {
-		if (noteData.alpha <= 0)
+		if (noteData.alpha <= 0.001 || !visible || alpha <= 0.001)
 			return;
+	
 		var changeX:Bool = ((noteData.z > 0 || noteData.z < 0) && noteData.z != 0);
 		var daNote = notes.members[noteData.index];
 		var thisNotePos = changeX ? ModchartUtil.calculatePerspective(new Vector3D(noteData.x
@@ -300,6 +301,11 @@ class PlayfieldRenderer extends FlxSprite // extending flxsprite just so i can e
 			ModchartUtil.defaultFOV * (Math.PI / 180),
 			-(daNote.width / 2),
 			-(daNote.height / 2)) : new Vector3D(noteData.x, noteData.y, 0);
+		
+		if(daNote.isSustainNote){
+			thisNotePos.x += daNote.width;
+			daNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * daNote.speed;
+		}
 
 		noteData.x = thisNotePos.x;
 		noteData.y = thisNotePos.y;
@@ -310,16 +316,20 @@ class PlayfieldRenderer extends FlxSprite // extending flxsprite just so i can e
 		// noteData.skewX = skewX + noteData.skewX;
 		// noteData.skewY = skewY + noteData.skewY;
 		// set note position using the position data
-		addDataToNote(noteData, notes.members[noteData.index]);
+		addDataToNote(noteData, daNote);
 		// make sure it draws on the correct camera
-		notes.members[noteData.index].cameras = this.cameras;
+		daNote.cameras = this.cameras;
 		// draw it
-		notes.members[noteData.index].draw();
+		daNote.draw();
 	}
 
 	public function drawSustainNote(noteData:NotePositionData) {
 		if (noteData.alpha <= 0.001 || !visible || alpha <= 0.001)
 			return;
+		if(utilities.Options.getData("optimizedModcharts")){
+			drawNote(noteData);
+			return;
+		}
 		var daNote = notes.members[noteData.index];
 		if (daNote.mesh == null)
 			daNote.mesh = new SustainStrip(daNote);
@@ -388,9 +398,7 @@ class PlayfieldRenderer extends FlxSprite // extending flxsprite just so i can e
 			else if (!notes.members[noteData.index].isSustainNote) // draw regular note
 				drawNote(noteData);
 			else { // draw sustain
-				#if LEATHER /*disable the funny sustains options for low-end pc lol*/ if (utilities.Options.getData("optimizedModcharts"))
-					drawNote(noteData)
-				else #end drawSustainNote(noteData);
+				drawSustainNote(noteData);
 			}
 		}
 	}
