@@ -206,6 +206,8 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		DrunkYModifier,
 		DrunkZModifier,
 		SchmovinDrunkXModifier,
+		SchmovinDrunkYModifier,
+		SchmovinDrunkZModifier,
 		DrunkAngleModifier,
 		TanDrunkXModifier,
 		TanDrunkYModifier,
@@ -1604,7 +1606,11 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 			case 'DrunkZModifier':
 				return "Modifier used to do a wave at Z (Far, Close) poss of the notes and targets";
 			case 'SchmovinDrunkXModifier':
-				return "Port of the drunk modifier from the schmovin modchart framework.";
+				return "Port of the drunk x modifier from the schmovin modchart framework.";
+			case 'SchmovinDrunkYModifier':
+				return "Port of the drunk y modifier from the schmovin modchart framework.";
+			case 'SchmovinDrunkZModifier':
+				return "Port of the drunk z modifier from the schmovin modchart framework.";
 			case 'TipsyXModifier':
 				return "Modifier similar to DrunkX but don't affect notes poss";
 			case 'TipsyYModifier':
