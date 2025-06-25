@@ -284,7 +284,10 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		EaseYModifier,
 		EaseZModifier,
 		ShakyNotesModifier,
-		ArrowPath
+		ArrowPath,
+		ColorTransformRed,
+		ColorTransformGreen,
+		ColorTransformBlue,
 	];
 	public static var easeList:Array<String> = [
 		"backIn",
@@ -608,13 +611,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		var hidenHud:Bool = false;
 		var hideUI:FlxButton = new FlxButton(FlxG.width, FlxG.height, 'Show/Hide UI', function() {
 			hidenHud = !hidenHud;
-			if (hidenHud) {
-				UI_box.alpha = 0;
-				debugText.alpha = 0;
-			} else {
-				UI_box.alpha = 1;
-				debugText.alpha = 1;
-			}
+			songSlider.alpha = sliderRate.alpha = UI_box.alpha = debugText.alpha = hidenHud ? 0 : 1;
 			// camGame.visible = !camGame.visible;
 		});
 		hideUI.y -= hideUI.height;
@@ -1782,6 +1779,12 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 				return "Modifier similar to invertSine, but notes will do their own path instead";
 			case 'ArrowPath':
 				return "This modifier its able to make custom paths for the mods so this should be a very helpful tool";
+			case 'ColorTransformRed':
+				return "Alters the color transform of a note on the red channel (0-255)";
+			case 'ColorTransformGreen':
+				return "Alters the color transform of a note on the green channel (0-255)";
+			case 'ColorTransformBlue':
+				return "Alters the color transform of a note on the blue channel (0-255)";
 		}
 		return "Unknown Modifer";
 	}
@@ -2264,6 +2267,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 	}
 
 	public var sliderRate:FlxUISlider;
+	public var songSlider:FlxUISlider;
 
 	public function setupEditorUI() {
 		var tab_group = new FlxUI(null, UI_box);
@@ -2275,7 +2279,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 			dirtyUpdateEvents = true;
 		};
 
-		var songSlider = new FlxUISlider(inst, 'time', 20, 200, 0, inst.length, 250, null, 5, FlxColor.WHITE, FlxColor.BLACK);
+		songSlider = new FlxUISlider(inst, 'time', 20, 200, 0, inst.length, 250, null, 5, FlxColor.WHITE, FlxColor.BLACK);
 		songSlider.valueLabel.visible = false;
 		songSlider.maxLabel.visible = false;
 		songSlider.minLabel.visible = false;

@@ -130,11 +130,11 @@ class PlayfieldRenderer extends FlxSprite // extending flxsprite just so i can e
 		strum.angle3D.x = strumData.angleX;
 		strum.angle3D.y = strumData.angleY;
 		strum.angle3D.z = strumData.angleZ;
-		strum.alpha = strumData.alpha;
 		strum.scale.x = strumData.scaleX;
 		strum.scale.y = strumData.scaleY;
 		strum.skew.x = strumData.skewX;
 		strum.skew.y = strumData.skewY;
+		strum.setColorTransform(1, 1, 1, strumData.alpha, strumData.redOffset, strumData.greenOffset, strumData.blueOffset);
 	}
 
 	public function getDataForStrum(i:Int, pf:Int) {
@@ -159,11 +159,11 @@ class PlayfieldRenderer extends FlxSprite // extending flxsprite just so i can e
 		daNote.angle3D.x = noteData.angleX;
 		daNote.angle3D.y = noteData.angleY;
 		daNote.angle3D.z = noteData.angleZ;
-		daNote.alpha = noteData.alpha;
 		daNote.scale.x = noteData.scaleX;
 		daNote.scale.y = noteData.scaleY;
 		daNote.skew.x = noteData.skewX;
 		daNote.skew.y = noteData.skewY;
+		daNote.setColorTransform(1, 1, 1, noteData.alpha, noteData.redOffset, noteData.greenOffset, noteData.blueOffset);
 	}
 
 	public function createDataFromNote(noteIndex:Int, playfieldIndex:Int, curPos:Float, noteDist:Float, incomingAngle:Array<Float>) {
@@ -345,7 +345,7 @@ class PlayfieldRenderer extends FlxSprite // extending flxsprite just so i can e
 		daNote.mesh.scrollFactor.x = daNote.scrollFactor.x;
 		daNote.mesh.scrollFactor.y = daNote.scrollFactor.y;
 		daNote.alpha = noteData.alpha;
-		daNote.mesh.alpha = daNote.alpha;
+		daNote.mesh.setColorTransform(1, 1, 1, daNote.alpha, noteData.redOffset, noteData.greenOffset, noteData.blueOffset);
 
 		var songSpeed = daNote.speed;
 		var lane = noteData.lane;
