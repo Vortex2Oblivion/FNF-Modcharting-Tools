@@ -230,7 +230,7 @@ class SchmovinDrunkXModifier extends Modifier {
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
 		var playerColumn = lane % NoteMovement.keyCount;
 		var phaseShift = (playerColumn * 0.5) + (Conductor.songPosition - noteData.strumTime) / 222 * Math.PI;
-		var beat = curPos; // cast(FlxG.state, MusicBeatState).curDecBeat;
+		var beat = cast(FlxG.state, MusicBeatState).curDecBeat;
 		var offsetX = FlxMath.fastSin((beat * subValues.get('speed').value) / 4 * Math.PI + phaseShift) * (Note.swagWidth / 2) * currentValue;
 		noteData.x += offsetX;
 	}
@@ -247,7 +247,7 @@ class SchmovinDrunkYModifier extends Modifier {
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
 		var playerColumn = lane % NoteMovement.keyCount;
 		var phaseShift = (playerColumn * 0.5) + (Conductor.songPosition - noteData.strumTime) / 222 * Math.PI;
-		var beat = curPos; // cast(FlxG.state, MusicBeatState).curDecBeat;
+		var beat = cast(FlxG.state, MusicBeatState).curDecBeat;
 		var offsetY = FlxMath.fastSin((beat * subValues.get('speed').value) / 4 * Math.PI + phaseShift) * (Note.swagWidth / 2) * currentValue;
 		noteData.y += offsetY;
 	}
@@ -264,7 +264,7 @@ class SchmovinDrunkZModifier extends Modifier {
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
 		var playerColumn = lane % NoteMovement.keyCount;
 		var phaseShift = (playerColumn * 0.5) + (Conductor.songPosition - noteData.strumTime) / 222 * Math.PI;
-		var beat = curPos; // cast(FlxG.state, MusicBeatState).curDecBeat;
+		var beat = cast(FlxG.state, MusicBeatState).curDecBeat;
 		var offsetZ = FlxMath.fastSin((beat * subValues.get('speed').value) / 4 * Math.PI + phaseShift) * (Note.swagWidth / 2) * currentValue;
 		noteData.z += offsetZ;
 	}
