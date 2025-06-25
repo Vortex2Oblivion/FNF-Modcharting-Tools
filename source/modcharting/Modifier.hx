@@ -606,15 +606,39 @@ class ZModifier extends Modifier
     }
 }
 
-class ConfusionModifier extends Modifier //note angle
+class PitchModifier extends Modifier
 {
     override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int)
     {
-        noteData.angle += currentValue;
+        noteData.angleX += currentValue;
     }
     override function strumMath(noteData:NotePositionData, lane:Int, pf:Int)
     {
-        noteData.angle += currentValue;
+        noteData.angleX += currentValue;
+    }
+}
+
+class YawModifier extends Modifier
+{
+    override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int)
+    {
+        noteData.angleY += currentValue;
+    }
+    override function strumMath(noteData:NotePositionData, lane:Int, pf:Int)
+    {
+        noteData.angleY += currentValue;
+    }
+}
+
+class ConfusionModifier extends Modifier
+{
+    override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int)
+    {
+        noteData.angleZ += currentValue;
+    }
+    override function strumMath(noteData:NotePositionData, lane:Int, pf:Int)
+    {
+        noteData.angleZ += currentValue;
     }
 }
 
@@ -938,7 +962,7 @@ class EaseCurveAngleModifier extends EaseCurveModifier
 {
     override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int)
     {
-        noteData.angle += (easeFunc(curPos*0.01)*currentValue*0.2);
+        noteData.angleZ += (easeFunc(curPos*0.01)*currentValue*0.2);
     }
 }
 /*
@@ -1144,7 +1168,7 @@ class StrumAngleModifier extends Modifier
         if (instance != null)
             if (ModchartUtil.getDownscroll(instance))
                 multiply *= -1;
-        noteData.angle += (currentValue*multiply);
+        noteData.angleZ += (currentValue*multiply);
         var laneShit = lane%NoteMovement.keyCount;
         var offsetThing = 0.5;
         var halfKeyCount = NoteMovement.keyCount/2;
@@ -1163,7 +1187,7 @@ class StrumAngleModifier extends Modifier
     }
     override function strumMath(noteData:NotePositionData, lane:Int, pf:Int)
     {
-        // noteData.angle += (subValues.get('y').value/2);
+        // noteData.angleZ += (subValues.get('y').value/2);
         noteMath(noteData, lane, 0, pf);
     }
     override function incomingAngleMath(lane:Int, curPos:Float, pf:Int)
@@ -1444,7 +1468,7 @@ class DizzyModifier extends Modifier
 {
     override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int)
     {
-        noteData.angle += currentValue*curPos;
+        noteData.angleZ += currentValue*curPos;
     }
 }
 
@@ -1475,7 +1499,7 @@ class NotesModifier extends Modifier
         noteData.x += subValues.get('x').value;
         noteData.y += subValues.get('y').value;
         noteData.y += subValues.get('yD').value * daswitch;
-        noteData.angle += subValues.get('angle').value;
+        noteData.angleZ += subValues.get('angle').value;
         noteData.z += subValues.get('z').value;
         noteData.skewX += subValues.get('skewx').value * -daswitch;
         noteData.skewY += subValues.get('skewy').value * -daswitch;
@@ -1521,7 +1545,7 @@ class LanesModifier extends Modifier
         noteData.x += subValues.get('x').value;
         noteData.y += subValues.get('y').value;
         noteData.y += subValues.get('yD').value * daswitch;
-        noteData.angle += subValues.get('angle').value;
+        noteData.angleZ += subValues.get('angle').value;
         noteData.z += subValues.get('z').value;
         noteData.skewX += subValues.get('skewx').value * -daswitch;
         noteData.skewY += subValues.get('skewy').value * -daswitch;
@@ -1562,7 +1586,7 @@ class StrumsModifier extends Modifier
         noteData.x += subValues.get('x').value;
         noteData.y += subValues.get('y').value;
         noteData.y += subValues.get('yD').value * daswitch;
-        noteData.angle += subValues.get('angle').value;
+        noteData.angleZ += subValues.get('angle').value;
         noteData.z += subValues.get('z').value;
         noteData.skewX += subValues.get('skewx').value * -daswitch;
         noteData.skewY += subValues.get('skewy').value * -daswitch;
@@ -1809,7 +1833,7 @@ class WaveAngleModifier extends Modifier
     }
     override function strumMath(noteData:NotePositionData, lane:Int, pf:Int)
     {
-        noteData.angle += 260*currentValue*FlxMath.fastSin(((Conductor.songPosition) * (subValues.get('speed').value)*0.0008)+(lane/4))*0.2;
+        noteData.angleZ += 260*currentValue*FlxMath.fastSin(((Conductor.songPosition) * (subValues.get('speed').value)*0.0008)+(lane/4))*0.2;
     }
     override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int)
     {
@@ -1825,7 +1849,7 @@ class TanWaveAngleModifier extends Modifier
     }
     override function strumMath(noteData:NotePositionData, lane:Int, pf:Int)
     {
-        noteData.angle += 260*currentValue*Math.tan(((Conductor.songPosition) * (subValues.get('speed').value)*0.0008)+(lane/4))*0.2;
+        noteData.angleZ += 260*currentValue*Math.tan(((Conductor.songPosition) * (subValues.get('speed').value)*0.0008)+(lane/4))*0.2;
     }
     override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int)
     {
@@ -1841,7 +1865,7 @@ class DrunkAngleModifier extends Modifier
     }
     override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int)
     {
-        noteData.angle += currentValue * (FlxMath.fastCos( ((Conductor.songPosition*0.001) + ((lane%NoteMovement.keyCount)*0.2) + 
+        noteData.angleZ += currentValue * (FlxMath.fastCos( ((Conductor.songPosition*0.001) + ((lane%NoteMovement.keyCount)*0.2) + 
         (curPos*0.45)*(10/FlxG.height)) * (subValues.get('speed').value*0.2)) * Note.swagWidth*0.5);
     }
     override function strumMath(noteData:NotePositionData, lane:Int, pf:Int)
@@ -1862,7 +1886,7 @@ class TanDrunkAngleModifier extends Modifier
     }
     override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int)
     {
-        noteData.angle += currentValue * (Math.tan( ((Conductor.songPosition*(0.001*subValues.get('period').value)) + ((lane%NoteMovement.keyCount)*0.2) + 
+        noteData.angleZ += currentValue * (Math.tan( ((Conductor.songPosition*(0.001*subValues.get('period').value)) + ((lane%NoteMovement.keyCount)*0.2) + 
         (curPos*(0.225*subValues.get('offset').value))*((subValues.get('spacing').value*10)/FlxG.height)) * 
         (subValues.get('speed').value*0.2)) * Note.swagWidth*(0.5*subValues.get('size').value));
     }

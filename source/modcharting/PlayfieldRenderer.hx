@@ -127,7 +127,9 @@ class PlayfieldRenderer extends FlxSprite // extending flxsprite just so i can e
 		strum.y = strumData.y;
 		// Add Z to your strumNoteType if you want it youself!
 		// strum.z = strumData.z;
-		strum.angle = strumData.angle;
+		strum.angle3D.x = strumData.angleX;
+		strum.angle3D.y = strumData.angleY;
+		strum.angle3D.z = strumData.angleZ;
 		strum.alpha = strumData.alpha;
 		strum.scale.x = strumData.scaleX;
 		strum.scale.y = strumData.scaleY;
@@ -154,7 +156,9 @@ class PlayfieldRenderer extends FlxSprite // extending flxsprite just so i can e
 		daNote.x = noteData.x;
 		daNote.y = noteData.y;
 		daNote.z = noteData.z;
-		daNote.angle = noteData.angle;
+		daNote.angle3D.x = noteData.angleX;
+		daNote.angle3D.y = noteData.angleY;
+		daNote.angle3D.z = noteData.angleZ;
 		daNote.alpha = noteData.alpha;
 		daNote.scale.x = noteData.scaleX;
 		daNote.scale.y = noteData.scaleY;

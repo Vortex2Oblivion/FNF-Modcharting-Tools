@@ -10,7 +10,9 @@ class NotePositionData implements IFlxDestroyable
     public var x:Float;
     public var y:Float;
     public var z:Float;
-    public var angle:Float;
+    public var angleX:Float;
+    public var angleY:Float;
+    public var angleZ:Float;
     public var alpha:Float;
     public var scaleX:Float;
     public var scaleY:Float;
@@ -37,7 +39,9 @@ class NotePositionData implements IFlxDestroyable
         this.x = x;
         this.y = y;
         this.z = z;
-        this.angle = 0;
+        this.angleX = 0;
+        this.angleY = 0;
+        this.angleZ = 0;
         this.alpha = 1;
         this.scaleX = scaleX; 
         this.scaleY = scaleY; 
@@ -59,7 +63,9 @@ class NotePositionData implements IFlxDestroyable
         this.x = x;
         this.y = y;
         this.z = z;
-        this.angle = 0;
+        this.angleX = 0;
+        this.angleY = 0;
+        this.angleZ = 0;
         this.alpha = alpha;
         this.scaleX = scaleX; 
         this.scaleY = scaleY; 

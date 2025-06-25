@@ -190,6 +190,8 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		YModifier,
 		YDModifier,
 		ZModifier,
+		PitchModifier,
+		YawModifier,
 		ConfusionModifier,
 		MiniModifier,
 		ScaleModifier,
@@ -1638,8 +1640,12 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 				return "Moves notes and targets Y (Automatically reverses in downscroll)";
 			case 'ZModifier':
 				return "Moves notes and targets Z (Far, Close)";
+			case 'PitchModifier':
+				return "Rotates notes around the X axis";
+			case 'YawModifier':
+				return "Rotates notes around the Y axis";
 			case 'ConfusionModifier':
-				return "Changes notes and targets angle";
+				return "Rotates notes around the Z axis";
 			case 'DizzyModifier':
 				return "Changes notes angle making a visual on them";
 			case 'ScaleModifier':
