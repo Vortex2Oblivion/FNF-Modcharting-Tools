@@ -962,7 +962,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 				#elseif (PSYCH && !(PSYCHVERSION >= "0.7"))
 				StageData.loadDirectory(PlayState.SONG);
 				#end
-				LoadingState.loadAndSwitchState(new PlayState());
+				LoadingState.loadAndSwitchState(() -> new PlayState());
 			};
 			if (hasUnsavedChanges) {
 				persistentUpdate = false;
