@@ -1688,11 +1688,11 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 			case 'BounceZModifier':
 				return "Modifier similar to beatZ but it only affect notes Z with a jump effect";
 			case 'StrumBounceXModifier':
-				return 'Bounces the strumline across the X axis.';
+				return 'Bounces the strumline across the X axis.'; 
 			case 'StrumBounceYModifier':
-				return 'Bounces the strumline across the Y axis.';
+				return 'Bounces the strumline across the Y axis.'; 
 			case 'StrumBounceZModifier':
-				return 'Bounces the strumline across the Z axis.';
+				return 'Bounces the strumline across the Z axis.'; 
 			case 'EaseCurveModifier':
 				return "This enables the EaseModifiers";
 			case 'EaseCurveXModifier':
