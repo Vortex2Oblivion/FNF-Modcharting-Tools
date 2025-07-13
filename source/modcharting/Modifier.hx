@@ -887,6 +887,58 @@ class BounceZModifier extends Modifier {
 	}
 }
 
+class StrumBounceXModifier extends Modifier {
+	override function setupSubValues() {
+		subValues.set('speed', new ModifierSubValue(1.0));
+		subValues.set('amplitude', new ModifierSubValue(45));
+	}
+
+	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
+		strumMath(noteData, lane, pf);
+	}
+
+
+	override function strumMath(noteData:NotePositionData, lane:Int, pf:Int) {
+		noteData.x +=  Math.abs(FlxMath.fastSin(Modifier.beat * 3 * subValues.get('speed').value))*subValues.get('amplitude').value;
+	}
+}
+
+
+
+
+class StrumBounceYModifier extends Modifier {
+	override function setupSubValues() {
+		subValues.set('speed', new ModifierSubValue(1.0));
+		subValues.set('amplitude', new ModifierSubValue(45));
+	}
+
+	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
+		strumMath(noteData, lane, pf);
+	}
+
+
+	override function strumMath(noteData:NotePositionData, lane:Int, pf:Int) {
+		noteData.y -=  Math.abs(FlxMath.fastSin(Modifier.beat * 3 * subValues.get('speed').value))*subValues.get('amplitude').value;
+	}
+}
+
+class StrumBounceZModifier extends Modifier {
+	override function setupSubValues() {
+		subValues.set('speed', new ModifierSubValue(1.0));
+		subValues.set('amplitude', new ModifierSubValue(45));
+	}
+
+	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
+		strumMath(noteData, lane, pf);
+	}
+
+
+	override function strumMath(noteData:NotePositionData, lane:Int, pf:Int) {
+		noteData.z +=  Math.abs(FlxMath.fastSin(Modifier.beat * 3 * subValues.get('speed').value))*subValues.get('amplitude').value;
+	}
+}
+
+
 class EaseCurveModifier extends Modifier {
 	public var easeFunc = FlxEase.linear;
 

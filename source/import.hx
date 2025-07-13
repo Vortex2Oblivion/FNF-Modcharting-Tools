@@ -1,7 +1,7 @@
 #if LEATHER
 import states.PlayState;
 import game.SongLoader;
-import game.Section.SwagSection;
+import game.SongLoader.Section as SwagSection;
 import game.Note;
 import ui.FlxScrollableDropDownMenu;
 import game.Conductor;

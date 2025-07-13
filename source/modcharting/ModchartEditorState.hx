@@ -43,7 +43,7 @@ import flixel.addons.transition.FlxTransitionableState;
 #if LEATHER
 import states.PlayState;
 import game.SongLoader;
-import game.Section.SwagSection;
+import game.SongLoader.Section as SwagSection;
 import game.Note;
 import ui.FlxScrollableDropDownMenu as FlxUIDropDownMenu; // im lazy sue me
 import game.Conductor;
@@ -104,54 +104,53 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 
 	#if LEATHER
 	/*public var curDecStep:Float = 0;
-	public var curDecBeat:Float = 0;
+		public var curDecBeat:Float = 0;
 
-	override public function updateBeat():Void {
-		curBeat = Math.floor(curStep / Conductor.timeScale[1]);
-		curDecBeat = curDecStep / Conductor.timeScale[1];
-	}
-
-	override public function updateCurStep():Void {
-		var lastChange:BPMChangeEvent = {
-			stepTime: 0,
-			songTime: 0,
-			bpm: 0
-		}
-		for (i in 0...Conductor.bpmChangeMap.length) {
-			if (Conductor.songPosition >= Conductor.bpmChangeMap[i].songTime)
-				lastChange = Conductor.bpmChangeMap[i];
+		override public function updateBeat():Void {
+			curBeat = Math.floor(curStep / Conductor.timeScale[1]);
+			curDecBeat = curDecStep / Conductor.timeScale[1];
 		}
 
-		var dumb:TimeScaleChangeEvent = {
-			stepTime: 0,
-			songTime: 0,
-			timeScale: [4, 4]
-		};
+		override public function updateCurStep():Void {
+			var lastChange:BPMChangeEvent = {
+				stepTime: 0,
+				songTime: 0,
+				bpm: 0
+			}
+			for (i in 0...Conductor.bpmChangeMap.length) {
+				if (Conductor.songPosition >= Conductor.bpmChangeMap[i].songTime)
+					lastChange = Conductor.bpmChangeMap[i];
+			}
 
-		var lastTimeChange:TimeScaleChangeEvent = dumb;
+			var dumb:TimeScaleChangeEvent = {
+				stepTime: 0,
+				songTime: 0,
+				timeScale: [4, 4]
+			};
 
-		for (i in 0...Conductor.timeScaleChangeMap.length) {
-			if (Conductor.songPosition >= Conductor.timeScaleChangeMap[i].songTime)
-				lastTimeChange = Conductor.timeScaleChangeMap[i];
-		}
+			var lastTimeChange:TimeScaleChangeEvent = dumb;
 
-		if (lastTimeChange != dumb)
-			Conductor.timeScale = lastTimeChange.timeScale;
+			for (i in 0...Conductor.timeScaleChangeMap.length) {
+				if (Conductor.songPosition >= Conductor.timeScaleChangeMap[i].songTime)
+					lastTimeChange = Conductor.timeScaleChangeMap[i];
+			}
 
-		var multi:Float = 1;
+			if (lastTimeChange != dumb)
+				Conductor.timeScale = lastTimeChange.timeScale;
 
-		if (FlxG.state == PlayState.instance)
-			multi = PlayState.songMultiplier;
+			var multi:Float = 1;
 
-		Conductor.recalculateStuff(multi);
+			if (FlxG.state == PlayState.instance)
+				multi = PlayState.songMultiplier;
 
-		var shit = (Conductor.songPosition - lastChange.songTime) / Conductor.stepCrochet;
-		curStep = lastChange.stepTime + Math.floor(shit);
-		curDecStep = lastChange.stepTime + shit;
+			Conductor.recalculateStuff(multi);
 
-		updateBeat();
+			var shit = (Conductor.songPosition - lastChange.songTime) / Conductor.stepCrochet;
+			curStep = lastChange.stepTime + Math.floor(shit);
+			curDecStep = lastChange.stepTime + shit;
+
+			updateBeat();
 	}*/
-
 	public var ui_settings:Array<String>;
 	public var mania_size:Array<String>;
 	public var mania_offset:Array<String>;
@@ -262,6 +261,9 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		BounceXModifier,
 		BounceYModifier,
 		BounceZModifier,
+		StrumBounceXModifier,
+		StrumBounceYModifier,
+		StrumBounceZModifier,
 		BumpyModifier,
 		BeatXModifier,
 		BeatYModifier,
@@ -1685,6 +1687,12 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 				return "Modifier similar to beatY but it only affect notes Y with a jump effect";
 			case 'BounceZModifier':
 				return "Modifier similar to beatZ but it only affect notes Z with a jump effect";
+			case 'StrumBounceXModifier':
+				return 'Bounces the strumline across the X axis.'
+			case 'StrumBounceYModifier':
+				return 'Bounces the strumline across the Y axis.'
+			case 'StrumBounceZModifier':
+				return 'Bounces the strumline across the Z axis.'
 			case 'EaseCurveModifier':
 				return "This enables the EaseModifiers";
 			case 'EaseCurveXModifier':
@@ -2368,11 +2376,11 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 			playerStrums.clear();
 			opponentStrums.clear();
 			strumLineNotes.clear();
-			for(note in notes.members){
+			for (note in notes.members) {
 				if (note.isSustainNote)
 					note.flipY = check_downscroll.checked;
 			}
-			for(note in unspawnNotes){
+			for (note in unspawnNotes) {
 				if (note.isSustainNote)
 					note.flipY = check_downscroll.checked;
 			}
