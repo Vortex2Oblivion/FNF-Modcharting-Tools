@@ -239,7 +239,7 @@ class ModchartFile
                 {
                     #if LEATHER
                         filePath = Paths.json("song data/" + folder + '/modchart-' + difficulty.toLowerCase());
-                        folderShit = PolymodAssets.getPath(filePath.replace('modchart-' + difficulty.toLowerCase() + '.json', "customMods/"));
+                        folderShit = Paths.getModPath(filePath.replace('modchart-' + difficulty.toLowerCase() + '.json', "customMods/"));
                     #else 
                         filePath = Paths.json(folder + '/modchart-' + difficulty.toLowerCase());
                         folderShit = filePath.replace('modchart-' + difficulty.toLowerCase() + '.json', "customMods/");
@@ -251,7 +251,7 @@ class ModchartFile
                 {
                     #if LEATHER
                         filePath = Paths.json("song data/" + folder + '/modchart');
-                        folderShit = PolymodAssets.getPath(filePath.replace('modchart.json', "customMods/"));
+                        folderShit = Paths.getModPath(filePath.replace('modchart.json', "customMods/"));
                     #else 
                         filePath = Paths.json(folder + '/modchart');
                         folderShit = filePath.replace('modchart.json', "customMods/");
