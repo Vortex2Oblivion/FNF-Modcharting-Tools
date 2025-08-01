@@ -204,9 +204,9 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		DrunkXModifier,
 		DrunkYModifier,
 		DrunkZModifier,
-		SchmovinDrunkXModifier,
+		/*SchmovinDrunkXModifier,
 		SchmovinDrunkYModifier,
-		SchmovinDrunkZModifier,
+		SchmovinDrunkZModifier,*/
 		DrunkAngleModifier,
 		TanDrunkXModifier,
 		TanDrunkYModifier,
