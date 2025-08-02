@@ -41,8 +41,11 @@ class FlxSprite3D extends FlxSprite {
 	}
 
 	override function set_angle(Value:Float):Float {
-		angle3D.z = Value;
-		return super.set_angle(Value);
+		return angle3D.z = Value;
+	}
+
+	override function get_angle():Float {
+		return angle3D.z;
 	}
 
 	override function destroy() {
@@ -109,14 +112,14 @@ class FlxSprite3D extends FlxSprite {
 	 * @see https://github.com/raysan5/raylib/blob/7f8bf2233c29ebbd98566962bb3730095b11a4e2/src/raymath.h#L1790
 	 */
 	private function rotateXYZ(angle:Vector3D) {
-		var cosz:Float = Math.cos(FlxAngle.asRadians(-angle.z));
-		var sinz:Float = Math.sin(FlxAngle.asRadians(-angle.z));
+		var cosz:Float = Math.cos(-FlxAngle.asRadians(angle.z));
+		var sinz:Float = Math.sin(-FlxAngle.asRadians(angle.z));
 
-		var cosy:Float = Math.cos(FlxAngle.asRadians(-angle.y));
-		var siny:Float = Math.sin(FlxAngle.asRadians(-angle.y));
+		var cosy:Float = Math.cos(-FlxAngle.asRadians(angle.y));
+		var siny:Float = Math.sin(-FlxAngle.asRadians(angle.y));
 
-		var cosx:Float = Math.cos(FlxAngle.asRadians(-angle.x));
-		var sinx:Float = Math.sin(FlxAngle.asRadians(-angle.x));
+		var cosx:Float = Math.cos(-FlxAngle.asRadians(angle.x));
+		var sinx:Float = Math.sin(-FlxAngle.asRadians(angle.x));
 
 		_rotationMatrix.a = cosz * cosy;
 		_rotationMatrix.b = (cosz * siny * sinx) - (sinz * cosx);
