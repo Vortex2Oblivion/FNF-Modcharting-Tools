@@ -2425,7 +2425,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 			style: {
 				titleWidth: 150,
 				bodyWidth: 150,
-				bodyOffset: new FlxPoint(5, 5),
+				bodyOffset: FlxPoint.get(5, 5),
 				leftPadding: 5,
 				rightPadding: 5,
 				topPadding: 5,
