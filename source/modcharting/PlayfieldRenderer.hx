@@ -311,7 +311,7 @@ class PlayfieldRenderer extends FlxSprite // extending flxsprite just so i can e
 				thisNotePos.x += daNote.width;
 			}
 			if(!daNote.animation.curAnim.name.endsWith("end")){
-				noteData.scaleY *= Conductor.stepCrochet / 100 * 1.5 * daNote.speed;
+				noteData.scaleY *= Conductor.stepCrochet / 100 * Note.SCALE_MULT * daNote.speed;
 			}
 		}
 

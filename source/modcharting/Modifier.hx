@@ -219,60 +219,6 @@ class DrunkZModifier extends Modifier {
 	}
 }
 
-/**
- * @see https://github.com/4mbr0s3-2/Schmovin/blob/main/note_mods/NoteModDrunk.hx
- */
-class SchmovinDrunkXModifier extends Modifier {
-	override function setupSubValues() {
-		subValues.set('speed', new ModifierSubValue(1.0));
-	}
-
-	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
-		var playerColumn = lane % NoteMovement.keyCount;
-		var phaseShift = (playerColumn * 0.5) + (Conductor.songPosition - noteData.strumTime) / 222 * Math.PI;
-		var beat = cast(FlxG.state, MusicBeatState).curDecBeat;
-		var offsetX = FlxMath.fastSin((beat * subValues.get('speed').value) / 4 * Math.PI + phaseShift) * (Note.swagWidth / 2) * currentValue;
-		noteData.x += offsetX;
-	}
-
-	override function strumMath(noteData:NotePositionData, lane:Int, pf:Int) {
-		noteMath(noteData, lane, 0, pf); // just reuse same thing
-	}
-}
-class SchmovinDrunkYModifier extends Modifier {
-	override function setupSubValues() {
-		subValues.set('speed', new ModifierSubValue(1.0));
-	}
-
-	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
-		var playerColumn = lane % NoteMovement.keyCount;
-		var phaseShift = (playerColumn * 0.5) + (Conductor.songPosition - noteData.strumTime) / 222 * Math.PI;
-		var beat = cast(FlxG.state, MusicBeatState).curDecBeat;
-		var offsetY = FlxMath.fastSin((beat * subValues.get('speed').value) / 4 * Math.PI + phaseShift) * (Note.swagWidth / 2) * currentValue;
-		noteData.y += offsetY;
-	}
-
-	override function strumMath(noteData:NotePositionData, lane:Int, pf:Int) {
-		noteMath(noteData, lane, 0, pf); // just reuse same thing
-	}
-}
-class SchmovinDrunkZModifier extends Modifier {
-	override function setupSubValues() {
-		subValues.set('speed', new ModifierSubValue(1.0));
-	}
-
-	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
-		var playerColumn = lane % NoteMovement.keyCount;
-		var phaseShift = (playerColumn * 0.5) + (Conductor.songPosition - noteData.strumTime) / 222 * Math.PI;
-		var beat = cast(FlxG.state, MusicBeatState).curDecBeat;
-		var offsetZ = FlxMath.fastSin((beat * subValues.get('speed').value) / 4 * Math.PI + phaseShift) * (Note.swagWidth / 2) * currentValue;
-		noteData.z += offsetZ;
-	}
-
-	override function strumMath(noteData:NotePositionData, lane:Int, pf:Int) {
-		noteMath(noteData, lane, 0, pf); // just reuse same thing
-	}
-}
 class TipsyXModifier extends Modifier {
 	override function setupSubValues() {
 		subValues.set('speed', new ModifierSubValue(1.0));
