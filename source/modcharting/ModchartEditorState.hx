@@ -1146,14 +1146,12 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		try {
 			if (PlayState.SONG.needsVoices) {
 				#if LEATHER
-				for (character in [
-					'player',
-					'opponent',
-					PlayState.boyfriend.curCharacter,
-					PlayState.dad.curCharacter
-				]) {
-					var soundPath:String = Paths.voices(PlayState.SONG.song, PlayState.SONG.specialAudioName ?? PlayState.storyDifficultyStr.toLowerCase(),
-						character, PlayState.boyfriend.curCharacter);
+				for (character in ['player', 'opponent', PlayState.SONG.player1, PlayState.SONG.player2]) {
+					if (vocals.members.length >= 2) {
+						break;
+					}
+					var soundPath:String = Paths.voices(PlayState.SONG.song, PlayState.SONG.specialAudioName ?? PlayState.storyDifficultyStr.toLowerCase(), character,
+						PlayState.SONG.player1);
 					if (!addedVocals.contains(soundPath)) {
 						vocals.add(FlxG.sound.list.add(new FlxSound().loadEmbedded(soundPath)));
 						addedVocals.push(soundPath);
@@ -1679,11 +1677,11 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 			case 'BounceZModifier':
 				return "Modifier similar to beatZ but it only affect notes Z with a jump effect";
 			case 'StrumBounceXModifier':
-				return 'Bounces the strumline across the X axis.'; 
+				return 'Bounces the strumline across the X axis.';
 			case 'StrumBounceYModifier':
-				return 'Bounces the strumline across the Y axis.'; 
+				return 'Bounces the strumline across the Y axis.';
 			case 'StrumBounceZModifier':
-				return 'Bounces the strumline across the Z axis.'; 
+				return 'Bounces the strumline across the Z axis.';
 			case 'EaseCurveModifier':
 				return "This enables the EaseModifiers";
 			case 'EaseCurveXModifier':
