@@ -2189,9 +2189,18 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 	public function onSelectEvent(fromStackedEventStepper = false) {
 		// update texts and stuff
 		updateSelectedEventDataStepper();
-		eventTimeStepper.value = Std.parseFloat(highlightedEvent[EVENT_DATA][EVENT_TIME]);
-		eventDataInputText.text = highlightedEvent[EVENT_DATA][EVENT_EASEDATA];
-
+		try{
+			eventTimeStepper.value = Std.parseFloat(highlightedEvent[EVENT_DATA][EVENT_TIME]) ?? 0;
+		}
+		catch(e){
+			eventTimeStepper.value = 0;
+		}
+		try{
+			eventDataInputText.text = highlightedEvent[EVENT_DATA][EVENT_EASEDATA] ?? "unknown";
+		}
+		catch(e){
+			eventDataInputText.text = "unknown";
+		}
 		eventEaseInputText.alpha = 0.5;
 		eventTimeInputText.alpha = 0.5;
 		if (highlightedEvent[EVENT_TYPE] == 'ease') {
@@ -2218,7 +2227,12 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 			switch (wname) {
 				case "selectedEventMod": // stupid steppers which dont have normal callbacks
 					if (highlightedEvent != null) {
-						eventDataInputText.text = highlightedEvent[EVENT_DATA][EVENT_EASEDATA];
+						try{
+							eventDataInputText.text = highlightedEvent[EVENT_DATA][EVENT_EASEDATA];
+						}
+						catch(e){
+							eventDataInputText.text = "";
+						}
 						eventModInputText.text = getEventModData(true);
 						eventValueInputText.text = getEventModData(false);
 					}
