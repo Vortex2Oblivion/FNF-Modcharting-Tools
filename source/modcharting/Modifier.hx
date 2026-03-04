@@ -97,7 +97,7 @@ class Modifier {
 		return curPos;
 	}
 
-	// usually fnf does *Note.PIXELS_PER_MS to slow the scroll speed a little, thats what this is
+	// usually fnf does *0.45 to slow the scroll speed a little, thats what this is
 	// kinda just called it notedist cuz idk what else to call it,
 	// using it for reverse/scroll speed changes ig
 	public function getNoteDist(noteDist:Float, lane:Int, curPos:Float, pf:Int) {
@@ -185,7 +185,7 @@ class DrunkXModifier extends Modifier {
 	function drunkMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
 		return currentValue * (FlxMath.fastCos(((Conductor.songPosition * 0.001)
 			+ ((lane % NoteMovement.keyCount) * ((subValues.get('phaseShift').value * 0.2) + 0.2))
-			+ (curPos * Note.PIXELS_PER_MS) * (((subValues.get('period')
+			+ (curPos * 0.45) * (((subValues.get('period')
 				.value * 10) + 10) / FlxG.height)) * (subValues.get('speed').value * 0.2)) * Note.swagWidth * 0.5);
 	}
 
@@ -1034,7 +1034,7 @@ class JumpModifier extends Modifier // custom thingy i made
 			if (ModchartUtil.getDownscroll(instance))
 				scrollSwitch = -1;
 
-		noteData.y += (beatVal * (Conductor.stepCrochet * currentValue)) * renderer.getCorrectScrollSpeed() * Note.PIXELS_PER_MS * scrollSwitch;
+		noteData.y += (beatVal * (Conductor.stepCrochet * currentValue)) * renderer.getCorrectScrollSpeed() * 0.45 * scrollSwitch;
 	}
 }
 
@@ -1158,7 +1158,7 @@ class JumpTargetModifier extends Modifier {
 			if (ModchartUtil.getDownscroll(instance))
 				scrollSwitch = -1;
 
-		noteData.y += (beatVal * (Conductor.stepCrochet * currentValue)) * renderer.getCorrectScrollSpeed() * Note.PIXELS_PER_MS * scrollSwitch;
+		noteData.y += (beatVal * (Conductor.stepCrochet * currentValue)) * renderer.getCorrectScrollSpeed() * 0.45 * scrollSwitch;
 	}
 }
 
@@ -1171,7 +1171,7 @@ class JumpNotesModifier extends Modifier {
 			if (ModchartUtil.getDownscroll(instance))
 				scrollSwitch = -1;
 
-		noteData.y += (beatVal * (Conductor.stepCrochet * currentValue)) * renderer.getCorrectScrollSpeed() * Note.PIXELS_PER_MS * scrollSwitch;
+		noteData.y += (beatVal * (Conductor.stepCrochet * currentValue)) * renderer.getCorrectScrollSpeed() * 0.45 * scrollSwitch;
 	}
 }
 
