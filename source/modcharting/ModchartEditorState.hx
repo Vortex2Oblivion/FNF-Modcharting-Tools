@@ -214,6 +214,9 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		CosecantXModifier,
 		CosecantYModifier,
 		CosecantZModifier,
+		SchmovinDrunkXModifier,
+		SchmovinDrunkYModifier,
+		SchmovinDrunkZModifier,
 		// Tipsy Modifiers
 		TipsyXModifier,
 		TipsyYModifier,
@@ -292,6 +295,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		ColorTransformGreen,
 		ColorTransformBlue,
 	];
+	
 	public static var easeList:Array<String> = [
 		"backIn",
 		"backInOut",
@@ -578,6 +582,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		debugText = new FlxText(0, gridSize * 2, 0, "", 16);
 		debugText.alignment = FlxTextAlign.LEFT;
 		debugText.color = FlxColor.BLACK;
+		debugText.antialiasing = false;
 
 		var tabs = [
 			{name: "Editor", label: 'Editor'},
