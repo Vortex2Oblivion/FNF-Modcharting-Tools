@@ -84,8 +84,9 @@ class Modifier {
 	}
 
 	public function getIncomingAngle(lane:Int, curPos:Float, pf:Int):Array<Float> {
-		if (currentValue != baseValue)
+		if (currentValue != baseValue) {
 			return incomingAngleMath(lane, curPos, pf);
+		}
 		return [0, 0];
 	}
 
@@ -96,7 +97,7 @@ class Modifier {
 		return curPos;
 	}
 
-	// usually fnf does *0.45 to slow the scroll speed a little, thats what this is
+	// usually fnf does *Note.PIXELS_PER_MS to slow the scroll speed a little, thats what this is
 	// kinda just called it notedist cuz idk what else to call it,
 	// using it for reverse/scroll speed changes ig
 	public function getNoteDist(noteDist:Float, lane:Int, curPos:Float, pf:Int) {
@@ -177,11 +178,19 @@ class Modifier {
 class DrunkXModifier extends Modifier {
 	override function setupSubValues() {
 		subValues.set('speed', new ModifierSubValue(1.0));
+		subValues.set('period', new ModifierSubValue(1.0));
+		subValues.set('phaseShift', new ModifierSubValue(0));
+	}
+
+	function drunkMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
+		return currentValue * (FlxMath.fastCos(((Conductor.songPosition * 0.001)
+			+ ((lane % NoteMovement.keyCount) * ((subValues.get('phaseShift').value * 0.2) + 0.2))
+			+ (curPos * Note.PIXELS_PER_MS) * (((subValues.get('period').value * 10) + 10) / FlxG.height)) * (subValues.get('speed')
+				.value * 0.2)) * Note.swagWidth * 0.5);
 	}
 
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
-		noteData.x += currentValue * (FlxMath.fastCos(((Conductor.songPosition * 0.001) + ((lane % NoteMovement.keyCount) * 0.2)
-			+ (curPos * 0.45) * (10 / FlxG.height)) * (subValues.get('speed').value * 0.2)) * Note.swagWidth * 0.5);
+		noteData.x += drunkMath(noteData, lane, curPos, pf);
 	}
 
 	override function strumMath(noteData:NotePositionData, lane:Int, pf:Int) {
@@ -189,33 +198,15 @@ class DrunkXModifier extends Modifier {
 	}
 }
 
-class DrunkYModifier extends Modifier {
-	override function setupSubValues() {
-		subValues.set('speed', new ModifierSubValue(1.0));
-	}
-
+class DrunkYModifier extends DrunkXModifier {
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
-		noteData.y += currentValue * (FlxMath.fastCos(((Conductor.songPosition * 0.001) + ((lane % NoteMovement.keyCount) * 0.2)
-			+ (curPos * 0.45) * (10 / FlxG.height)) * (subValues.get('speed').value * 0.2)) * Note.swagWidth * 0.5);
-	}
-
-	override function strumMath(noteData:NotePositionData, lane:Int, pf:Int) {
-		noteMath(noteData, lane, 0, pf); // just reuse same thing
+		noteData.y += drunkMath(noteData, lane, curPos, pf);
 	}
 }
 
-class DrunkZModifier extends Modifier {
-	override function setupSubValues() {
-		subValues.set('speed', new ModifierSubValue(1.0));
-	}
-
+class DrunkZModifier extends DrunkXModifier {
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
-		noteData.z += currentValue * (FlxMath.fastCos(((Conductor.songPosition * 0.001) + ((lane % NoteMovement.keyCount) * 0.2)
-			+ (curPos * 0.45) * (10 / FlxG.height)) * (subValues.get('speed').value * 0.2)) * Note.swagWidth * 0.5);
-	}
-
-	override function strumMath(noteData:NotePositionData, lane:Int, pf:Int) {
-		noteMath(noteData, lane, 0, pf); // just reuse same thing
+		noteData.z += drunkMath(noteData, lane, curPos, pf);
 	}
 }
 
@@ -843,14 +834,10 @@ class StrumBounceXModifier extends Modifier {
 		strumMath(noteData, lane, pf);
 	}
 
-
 	override function strumMath(noteData:NotePositionData, lane:Int, pf:Int) {
-		noteData.x +=  Math.abs(FlxMath.fastSin(Modifier.beat * 3 * subValues.get('speed').value))*subValues.get('amplitude').value;
+		noteData.x += Math.abs(FlxMath.fastSin(Modifier.beat * 3 * subValues.get('speed').value)) * subValues.get('amplitude').value;
 	}
 }
-
-
-
 
 class StrumBounceYModifier extends Modifier {
 	override function setupSubValues() {
@@ -862,9 +849,8 @@ class StrumBounceYModifier extends Modifier {
 		strumMath(noteData, lane, pf);
 	}
 
-
 	override function strumMath(noteData:NotePositionData, lane:Int, pf:Int) {
-		noteData.y -=  Math.abs(FlxMath.fastSin(Modifier.beat * 3 * subValues.get('speed').value))*subValues.get('amplitude').value;
+		noteData.y -= Math.abs(FlxMath.fastSin(Modifier.beat * 3 * subValues.get('speed').value)) * subValues.get('amplitude').value;
 	}
 }
 
@@ -878,12 +864,10 @@ class StrumBounceZModifier extends Modifier {
 		strumMath(noteData, lane, pf);
 	}
 
-
 	override function strumMath(noteData:NotePositionData, lane:Int, pf:Int) {
-		noteData.z +=  Math.abs(FlxMath.fastSin(Modifier.beat * 3 * subValues.get('speed').value))*subValues.get('amplitude').value;
+		noteData.z += Math.abs(FlxMath.fastSin(Modifier.beat * 3 * subValues.get('speed').value)) * subValues.get('amplitude').value;
 	}
 }
-
 
 class EaseCurveModifier extends Modifier {
 	public var easeFunc = FlxEase.linear;
@@ -1010,7 +994,7 @@ class JumpModifier extends Modifier // custom thingy i made
 			if (ModchartUtil.getDownscroll(instance))
 				scrollSwitch = -1;
 
-		noteData.y += (beatVal * (Conductor.stepCrochet * currentValue)) * renderer.getCorrectScrollSpeed() * 0.45 * scrollSwitch;
+		noteData.y += (beatVal * (Conductor.stepCrochet * currentValue)) * renderer.getCorrectScrollSpeed() * Note.PIXELS_PER_MS * scrollSwitch;
 	}
 }
 
@@ -1134,7 +1118,7 @@ class JumpTargetModifier extends Modifier {
 			if (ModchartUtil.getDownscroll(instance))
 				scrollSwitch = -1;
 
-		noteData.y += (beatVal * (Conductor.stepCrochet * currentValue)) * renderer.getCorrectScrollSpeed() * 0.45 * scrollSwitch;
+		noteData.y += (beatVal * (Conductor.stepCrochet * currentValue)) * renderer.getCorrectScrollSpeed() * Note.PIXELS_PER_MS * scrollSwitch;
 	}
 }
 
@@ -1147,7 +1131,7 @@ class JumpNotesModifier extends Modifier {
 			if (ModchartUtil.getDownscroll(instance))
 				scrollSwitch = -1;
 
-		noteData.y += (beatVal * (Conductor.stepCrochet * currentValue)) * renderer.getCorrectScrollSpeed() * 0.45 * scrollSwitch;
+		noteData.y += (beatVal * (Conductor.stepCrochet * currentValue)) * renderer.getCorrectScrollSpeed() * Note.PIXELS_PER_MS * scrollSwitch;
 	}
 }
 
@@ -1719,18 +1703,21 @@ class TanWaveAngleModifier extends Modifier {
 	}
 }
 
-class DrunkAngleModifier extends Modifier {
-	override function setupSubValues() {
-		subValues.set('speed', new ModifierSubValue(1.0));
-	}
-
+class DrunkAngleModifier extends DrunkXModifier {
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
-		noteData.angleZ += currentValue * (FlxMath.fastCos(((Conductor.songPosition * 0.001) + ((lane % NoteMovement.keyCount) * 0.2)
-			+ (curPos * 0.45) * (10 / FlxG.height)) * (subValues.get('speed').value * 0.2)) * Note.swagWidth * 0.5);
+		noteData.angleZ += drunkMath(noteData, lane, curPos, pf);
 	}
+}
 
-	override function strumMath(noteData:NotePositionData, lane:Int, pf:Int) {
-		noteMath(noteData, lane, 0, pf); // just reuse same thing
+class DrunkPitchModifier extends DrunkXModifier {
+	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
+		noteData.angleX += drunkMath(noteData, lane, curPos, pf);
+	}
+}
+
+class DrunkYawModifier extends DrunkXModifier {
+	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
+		noteData.angleY += drunkMath(noteData, lane, curPos, pf);
 	}
 }
 
