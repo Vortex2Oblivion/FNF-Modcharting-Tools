@@ -185,8 +185,8 @@ class DrunkXModifier extends Modifier {
 	function drunkMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
 		return currentValue * (FlxMath.fastCos(((Conductor.songPosition * 0.001)
 			+ ((lane % NoteMovement.keyCount) * ((subValues.get('phaseShift').value * 0.2) + 0.2))
-			+ (curPos * Note.PIXELS_PER_MS) * (((subValues.get('period').value * 10) + 10) / FlxG.height)) * (subValues.get('speed')
-				.value * 0.2)) * Note.swagWidth * 0.5);
+			+ (curPos * Note.PIXELS_PER_MS) * (((subValues.get('period')
+				.value * 10) + 10) / FlxG.height)) * (subValues.get('speed').value * 0.2)) * Note.swagWidth * 0.5);
 	}
 
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
@@ -207,6 +207,46 @@ class DrunkYModifier extends DrunkXModifier {
 class DrunkZModifier extends DrunkXModifier {
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
 		noteData.z += drunkMath(noteData, lane, curPos, pf);
+	}
+}
+
+// schmovin because the built in ones kinda suck lol
+
+class SchmovinDrunkXModifier extends Modifier {
+	override function setupSubValues() {
+		subValues.set('speed', new ModifierSubValue(1.0));
+		subValues.set('period', new ModifierSubValue(1.0));
+		subValues.set('phaseShift', new ModifierSubValue(0));
+	}
+
+	function applyDrunk(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
+		var offset = subValues.get('phaseShift').value;
+		var period = subValues.get('period').value;
+		var speed = subValues.get('speed').value;
+
+		var phaseShift = ((lane % NoteMovement.keyCount) * 0.5) + offset + ((curPos) * period / 3) / 222 * Math.PI;
+		return FlxMath.fastSin((((cast(FlxG.state, MusicBeatState).curDecStep / Conductor.timeScale[0]) + 1) * speed) / 4 * Math.PI
+			+ phaseShift) * (Note.swagWidth / 2) * currentValue;
+	}
+
+	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
+		noteData.x += applyDrunk(noteData, lane, curPos, pf);
+	}
+
+	override function strumMath(noteData:NotePositionData, lane:Int, pf:Int) {
+		noteMath(noteData, lane, 0, pf); // just reuse same thing
+	}
+}
+
+class SchmovinDrunkYModifier extends SchmovinDrunkXModifier {
+	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
+		noteData.y += applyDrunk(noteData, lane, curPos, pf);
+	}
+}
+
+class SchmovinDrunkZModifier extends SchmovinDrunkXModifier {
+	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
+		noteData.z += applyDrunk(noteData, lane, curPos, pf);
 	}
 }
 
