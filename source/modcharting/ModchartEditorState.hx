@@ -221,6 +221,9 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		TipsyXModifier,
 		TipsyYModifier,
 		TipsyZModifier,
+		SchmovinTipsyXModifier,
+		SchmovinTipsyYModifier,
+		SchmovinTipsyZModifier,
 		// Wave Modifiers
 		WaveXModifier,
 		WaveYModifier,
