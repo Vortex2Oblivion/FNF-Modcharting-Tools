@@ -250,6 +250,43 @@ class SchmovinDrunkZModifier extends SchmovinDrunkXModifier {
 	}
 }
 
+class SchmovinTipsyXModifier extends Modifier {
+	override function setupSubValues() {
+		subValues.set('speed', new ModifierSubValue(1.0));
+		subValues.set('phaseShift', new ModifierSubValue(0));
+	}
+
+	function applyTipsy(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
+		var offset = subValues.get('phaseShift').value;
+		var speed = subValues.get('speed').value;
+
+		return Math.sin(((cast(FlxG.state, states.MusicBeatState).curDecStep / Conductor.timeScale[1]) + 1) * speed / 4 * Math.PI
+			+ (lane % PlayState.SONG.keyCount)
+			+ offset) * (Note.swagWidth / 2) * currentValue;
+	}
+
+	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
+		noteData.x += applyTipsy(noteData, lane, curPos, pf);
+	}
+
+	override function strumMath(noteData:NotePositionData, lane:Int, pf:Int) {
+		noteMath(noteData, lane, 0, pf); // just reuse same thing
+	}
+}
+
+class SchmovinTipsyYModifier extends SchmovinTipsyXModifier {
+	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
+		noteData.y += applyTipsy(noteData, lane, curPos, pf);
+	}
+}
+
+class SchmovinTipsyZModifier extends SchmovinTipsyXModifier {
+	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
+		noteData.z += applyTipsy(noteData, lane, curPos, pf);
+	}
+}
+
+
 class TipsyXModifier extends Modifier {
 	override function setupSubValues() {
 		subValues.set('speed', new ModifierSubValue(1.0));
