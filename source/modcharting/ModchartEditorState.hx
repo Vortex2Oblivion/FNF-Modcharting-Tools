@@ -644,16 +644,22 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 
 	override public function update(elapsed:Float) {
 		totalElapsed += elapsed;
-		highlight.alpha = 0.8 + FlxMath.fastSin(totalElapsed * 5) * 0.15;
+		highlight.alpha = 0.8 + Math.sin(totalElapsed * 5) * 0.15;
 		super.update(elapsed);
 		if (inst.time < 0) {
 			inst.pause();
 			inst.time = 0;
+			Conductor.songPosition = inst.time;
+
 		} else if (inst.time > inst.length) {
 			inst.pause();
 			inst.time = 0;
+			Conductor.songPosition = inst.time;
+
 		}
-		Conductor.songPosition = inst.time;
+		if(inst.playing){
+			Conductor.songPosition += FlxG.elapsed * 1000.0 * inst.pitch;
+		}
 
 		var songPosPixelPos = (((Conductor.songPosition / Conductor.stepCrochet) % 4) * gridSize);
 		grid.x = -curDecStep * gridSize;
@@ -744,6 +750,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 					opponentVocals.pause();
 				#end
 				inst.time += (FlxG.mouse.wheel * Conductor.stepCrochet * 0.8 * shiftThing);
+				Conductor.songPosition = inst.time;
 				if (vocals != null) {
 					vocals.pause();
 					vocals.time = inst.time;
@@ -768,6 +775,8 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 					opponentVocals.pause();
 				#end
 				inst.time += (Conductor.crochet * 4 * shiftThing);
+								Conductor.songPosition = inst.time;
+
 				dirtyUpdateNotes = true;
 				dirtyUpdateEvents = true;
 			}
@@ -780,6 +789,8 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 					opponentVocals.pause();
 				#end
 				inst.time -= (Conductor.crochet * 4 * shiftThing);
+								Conductor.songPosition = inst.time;
+
 				dirtyUpdateNotes = true;
 				dirtyUpdateEvents = true;
 			}
@@ -1193,6 +1204,7 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		try {
 			inst.loadEmbedded(Paths.inst(PlayState.SONG.song, PlayState.SONG.specialAudioName ?? PlayState.storyDifficultyStr.toLowerCase()));
 		}
+		Conductor.songPosition = inst.time;
 		FlxG.sound.list.add(inst);
 
 		inst.onComplete = function() {

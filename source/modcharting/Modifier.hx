@@ -183,7 +183,7 @@ class DrunkXModifier extends Modifier {
 	}
 
 	function drunkMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
-		return currentValue * (FlxMath.fastCos(((Conductor.songPosition * 0.001)
+		return currentValue * (Math.cos(((Conductor.songPosition * 0.001)
 			+ ((lane % NoteMovement.keyCount) * ((subValues.get('phaseShift').value * 0.2) + 0.2))
 			+ (curPos * 0.45) * (((subValues.get('period')
 				.value * 10) + 10) / FlxG.height)) * (subValues.get('speed').value * 0.2)) * Note.swagWidth * 0.5);
@@ -225,7 +225,7 @@ class SchmovinDrunkXModifier extends Modifier {
 		var speed = subValues.get('speed').value;
 
 		var phaseShift = ((lane % NoteMovement.keyCount) * 0.5) + offset + ((curPos) * period / 3) / 222 * Math.PI;
-		return FlxMath.fastSin((((cast(FlxG.state, MusicBeatState).curDecStep / Conductor.timeScale[0]) + 1) * speed) / 4 * Math.PI
+		return Math.sin((((cast(FlxG.state, MusicBeatState).curDecStep / Conductor.timeScale[0]) + 1) * speed) / 4 * Math.PI
 			+ phaseShift) * (Note.swagWidth / 2) * currentValue;
 	}
 
@@ -293,7 +293,7 @@ class TipsyXModifier extends Modifier {
 	}
 
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
-		noteData.x += currentValue * (FlxMath.fastCos((Conductor.songPosition * 0.001 * (1.2) +
+		noteData.x += currentValue * (Math.cos((Conductor.songPosition * 0.001 * (1.2) +
 			(lane % NoteMovement.keyCount) * (2.0)) * (5) * subValues.get('speed')
 			.value * 0.2) * Note.swagWidth * 0.4);
 	}
@@ -309,7 +309,7 @@ class TipsyYModifier extends Modifier {
 	}
 
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
-		noteData.y += currentValue * (FlxMath.fastCos((Conductor.songPosition * 0.001 * (1.2) +
+		noteData.y += currentValue * (Math.cos((Conductor.songPosition * 0.001 * (1.2) +
 			(lane % NoteMovement.keyCount) * (2.0)) * (5) * subValues.get('speed')
 			.value * 0.2) * Note.swagWidth * 0.4);
 	}
@@ -325,7 +325,7 @@ class TipsyZModifier extends Modifier {
 	}
 
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
-		noteData.z += currentValue * (FlxMath.fastCos((Conductor.songPosition * 0.001 * (1.2) +
+		noteData.z += currentValue * (Math.cos((Conductor.songPosition * 0.001 * (1.2) +
 			(lane % NoteMovement.keyCount) * (2.0)) * (5) * subValues.get('speed')
 			.value * 0.2) * Note.swagWidth * 0.4);
 	}
@@ -588,7 +588,7 @@ class BumpyModifier extends Modifier {
 	}
 
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
-		noteData.z += currentValue * 40 * FlxMath.fastSin(curPos * 0.01 * subValues.get('speed').value);
+		noteData.z += currentValue * 40 * Math.sin(curPos * 0.01 * subValues.get('speed').value);
 	}
 }
 
@@ -842,7 +842,7 @@ class BeatXModifier extends Modifier {
 		if (bEvenBeat)
 			fAmount *= -1;
 
-		var fShift = 20.0 * fAmount * FlxMath.fastSin((curPos * 0.01) + (Math.PI / 2.0));
+		var fShift = 20.0 * fAmount * Math.sin((curPos * 0.01) + (Math.PI / 2.0));
 		return fShift;
 	}
 }
@@ -873,7 +873,7 @@ class BounceXModifier extends Modifier {
 	}
 
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
-		noteData.x += currentValue * NoteMovement.arrowSizes[lane] * Math.abs(FlxMath.fastSin(curPos * 0.005 * subValues.get('speed').value));
+		noteData.x += currentValue * NoteMovement.arrowSizes[lane] * Math.abs(Math.sin(curPos * 0.005 * subValues.get('speed').value));
 	}
 }
 
@@ -887,7 +887,7 @@ class BounceYModifier extends Modifier {
 		if (instance != null)
 			if (ModchartUtil.getDownscroll(instance))
 				daswitch = -1;
-		noteData.y += (currentValue * daswitch) * NoteMovement.arrowSizes[lane] * Math.abs(FlxMath.fastSin(curPos * 0.005 * subValues.get('speed').value));
+		noteData.y += (currentValue * daswitch) * NoteMovement.arrowSizes[lane] * Math.abs(Math.sin(curPos * 0.005 * subValues.get('speed').value));
 	}
 }
 
@@ -897,7 +897,7 @@ class BounceZModifier extends Modifier {
 	}
 
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
-		noteData.z += currentValue * NoteMovement.arrowSizes[lane] * Math.abs(FlxMath.fastSin(curPos * 0.005 * subValues.get('speed').value));
+		noteData.z += currentValue * NoteMovement.arrowSizes[lane] * Math.abs(Math.sin(curPos * 0.005 * subValues.get('speed').value));
 	}
 }
 
@@ -912,7 +912,7 @@ class StrumBounceXModifier extends Modifier {
 	}
 
 	override function strumMath(noteData:NotePositionData, lane:Int, pf:Int) {
-		noteData.x += Math.abs(FlxMath.fastSin(Modifier.beat * 3 * subValues.get('speed').value)) * subValues.get('amplitude').value;
+		noteData.x += Math.abs(Math.sin(Modifier.beat * 3 * subValues.get('speed').value)) * subValues.get('amplitude').value;
 	}
 }
 
@@ -927,7 +927,7 @@ class StrumBounceYModifier extends Modifier {
 	}
 
 	override function strumMath(noteData:NotePositionData, lane:Int, pf:Int) {
-		noteData.y -= Math.abs(FlxMath.fastSin(Modifier.beat * 3 * subValues.get('speed').value)) * subValues.get('amplitude').value;
+		noteData.y -= Math.abs(Math.sin(Modifier.beat * 3 * subValues.get('speed').value)) * subValues.get('amplitude').value;
 	}
 }
 
@@ -942,7 +942,7 @@ class StrumBounceZModifier extends Modifier {
 	}
 
 	override function strumMath(noteData:NotePositionData, lane:Int, pf:Int) {
-		noteData.z += Math.abs(FlxMath.fastSin(Modifier.beat * 3 * subValues.get('speed').value)) * subValues.get('amplitude').value;
+		noteData.z += Math.abs(Math.sin(Modifier.beat * 3 * subValues.get('speed').value)) * subValues.get('amplitude').value;
 	}
 }
 
@@ -989,7 +989,7 @@ class EaseCurveAngleModifier extends EaseCurveModifier {
 }*/
 class InvertSineModifier extends Modifier {
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
-		noteData.x += FlxMath.fastSin(0 + (curPos * 0.004)) * (NoteMovement.arrowSizes[lane] * (lane % 2 == 0 ? 1 : -1) * currentValue * 0.5);
+		noteData.x += Math.sin(0 + (curPos * 0.004)) * (NoteMovement.arrowSizes[lane] * (lane % 2 == 0 ? 1 : -1) * currentValue * 0.5);
 	}
 }
 
@@ -1037,7 +1037,7 @@ class BoomerangModifier extends Modifier {
 			if (ModchartUtil.getDownscroll(instance))
 				scrollSwitch *= -1;
 
-		noteData.y += (FlxMath.fastSin((curPos / -700)) * 400 + (curPos / 3.5)) * scrollSwitch * (-currentValue);
+		noteData.y += (Math.sin((curPos / -700)) * 400 + (curPos / 3.5)) * scrollSwitch * (-currentValue);
 		noteData.alpha *= FlxMath.bound(1 - (curPos / -600 - 3.5), 0, 1);
 	}
 
@@ -1049,11 +1049,11 @@ class BoomerangModifier extends Modifier {
 class WaveingModifier extends Modifier {
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
 		var distance = curPos * 0.01;
-		noteData.y += (FlxMath.fastSin(distance * 0.3) * 50) * currentValue; // don't mind me i just figured it out
+		noteData.y += (Math.sin(distance * 0.3) * 50) * currentValue; // don't mind me i just figured it out
 	}
 
 	override function noteDistMath(noteDist:Float, lane:Int, curPos:Float, pf:Int) {
-		return noteDist * (0.4 + ((FlxMath.fastSin(curPos * 0.007) * 0.1) * currentValue));
+		return noteDist * (0.4 + ((Math.sin(curPos * 0.007) * 0.1) * currentValue));
 	}
 }
 
@@ -1082,7 +1082,7 @@ class WaveXModifier extends Modifier {
 	}
 
 	override function strumMath(noteData:NotePositionData, lane:Int, pf:Int) {
-		noteData.x += 260 * currentValue * FlxMath.fastSin(((Conductor.songPosition) * (subValues.get('speed').value) * 0.0008) + (lane / 4)) * 0.2;
+		noteData.x += 260 * currentValue * Math.sin(((Conductor.songPosition) * (subValues.get('speed').value) * 0.0008) + (lane / 4)) * 0.2;
 	}
 
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
@@ -1096,7 +1096,7 @@ class WaveYModifier extends Modifier {
 	}
 
 	override function strumMath(noteData:NotePositionData, lane:Int, pf:Int) {
-		noteData.y += 260 * currentValue * FlxMath.fastSin(((Conductor.songPosition) * (subValues.get('speed').value) * 0.0008) + (lane / 4)) * 0.2;
+		noteData.y += 260 * currentValue * Math.sin(((Conductor.songPosition) * (subValues.get('speed').value) * 0.0008) + (lane / 4)) * 0.2;
 	}
 
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
@@ -1110,7 +1110,7 @@ class WaveZModifier extends Modifier {
 	}
 
 	override function strumMath(noteData:NotePositionData, lane:Int, pf:Int) {
-		noteData.z += 260 * currentValue * FlxMath.fastSin(((Conductor.songPosition) * (subValues.get('speed').value) * 0.0008) + (lane / 4)) * 0.2;
+		noteData.z += 260 * currentValue * Math.sin(((Conductor.songPosition) * (subValues.get('speed').value) * 0.0008) + (lane / 4)) * 0.2;
 	}
 
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
@@ -1224,7 +1224,7 @@ class EaseXModifier extends Modifier {
 	}
 
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
-		noteData.x += currentValue * (FlxMath.fastCos(((Conductor.songPosition * 0.001) +
+		noteData.x += currentValue * (Math.cos(((Conductor.songPosition * 0.001) +
 			((lane % NoteMovement.keyCount) * 0.2) * (10 / FlxG.height)) * (subValues.get('speed')
 			.value * 0.2)) * Note.swagWidth * 0.5);
 	}
@@ -1240,7 +1240,7 @@ class EaseYModifier extends Modifier {
 	}
 
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
-		noteData.y += currentValue * (FlxMath.fastCos(((Conductor.songPosition * 0.001) +
+		noteData.y += currentValue * (Math.cos(((Conductor.songPosition * 0.001) +
 			((lane % NoteMovement.keyCount) * 0.2) * (10 / FlxG.height)) * (subValues.get('speed')
 			.value * 0.2)) * Note.swagWidth * 0.5);
 	}
@@ -1256,7 +1256,7 @@ class EaseZModifier extends Modifier {
 	}
 
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
-		noteData.z += currentValue * (FlxMath.fastCos(((Conductor.songPosition * 0.001) +
+		noteData.z += currentValue * (Math.cos(((Conductor.songPosition * 0.001) +
 			((lane % NoteMovement.keyCount) * 0.2) * (10 / FlxG.height)) * (subValues.get('speed')
 			.value * 0.2)) * Note.swagWidth * 0.5);
 	}
@@ -1658,7 +1658,7 @@ class BlinkModifier extends Modifier {
 	}
 
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
-		noteData.alpha *= (1 - (currentValue * FlxMath.fastSin(((Conductor.songPosition * 0.001) * (subValues.get('speed').value * 10)))));
+		noteData.alpha *= (1 - (currentValue * Math.sin(((Conductor.songPosition * 0.001) * (subValues.get('speed').value * 10)))));
 	}
 }
 
@@ -1668,7 +1668,7 @@ class TwirlModifier extends Modifier {
 	}
 
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
-		noteData.scaleX *= (0 + (currentValue * FlxMath.fastCos(((curPos * 0.001) * (5 * subValues.get('speed').value)))));
+		noteData.scaleX *= (0 + (currentValue * Math.cos(((curPos * 0.001) * (5 * subValues.get('speed').value)))));
 	}
 }
 
@@ -1678,7 +1678,7 @@ class RollModifier extends Modifier {
 	}
 
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
-		noteData.scaleY *= (0 + (currentValue * FlxMath.fastCos(((curPos * 0.001) * (5 * subValues.get('speed').value)))));
+		noteData.scaleY *= (0 + (currentValue * Math.cos(((curPos * 0.001) * (5 * subValues.get('speed').value)))));
 	}
 }
 
@@ -1692,7 +1692,7 @@ class CosecantXModifier extends Modifier {
 	}
 
 	public static function cosecant(angle:Null<Float>):Float {
-		return 1 / FlxMath.fastSin(angle);
+		return 1 / Math.sin(angle);
 	}
 
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
@@ -1758,7 +1758,7 @@ class WaveAngleModifier extends Modifier {
 	}
 
 	override function strumMath(noteData:NotePositionData, lane:Int, pf:Int) {
-		noteData.angleZ += 260 * currentValue * FlxMath.fastSin(((Conductor.songPosition) * (subValues.get('speed').value) * 0.0008) + (lane / 4)) * 0.2;
+		noteData.angleZ += 260 * currentValue * Math.sin(((Conductor.songPosition) * (subValues.get('speed').value) * 0.0008) + (lane / 4)) * 0.2;
 	}
 
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
@@ -1826,12 +1826,12 @@ class ShakyNotesModifier extends Modifier {
 	}
 
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
-		noteData.x += FlxMath.fastSin(500)
-			+ currentValue * (FlxMath.fastCos(Conductor.songPosition * 4 * 0.2) + ((lane % NoteMovement.keyCount) * 0.2) - 0.002) * (FlxMath.fastSin(100
+		noteData.x += Math.sin(500)
+			+ currentValue * (Math.cos(Conductor.songPosition * 4 * 0.2) + ((lane % NoteMovement.keyCount) * 0.2) - 0.002) * (Math.sin(100
 				- (120 * subValues.get('speed').value * 0.4))) /** (BeatXModifier.getShift(noteData, lane, curPos, pf) / 2)*/;
 
-		noteData.y += FlxMath.fastSin(500)
-			+ currentValue * (FlxMath.fastCos(Conductor.songPosition * 8 * 0.2) + ((lane % NoteMovement.keyCount) * 0.2) - 0.002) * (FlxMath.fastSin(100
+		noteData.y += Math.sin(500)
+			+ currentValue * (Math.cos(Conductor.songPosition * 8 * 0.2) + ((lane % NoteMovement.keyCount) * 0.2) - 0.002) * (Math.sin(100
 				- (120 * subValues.get('speed').value * 0.4))) /** (BeatXModifier.getShift(noteData, lane, curPos, pf) / 2)*/;
 	}
 
@@ -1842,8 +1842,8 @@ class ShakyNotesModifier extends Modifier {
 
 class ShakeNotesModifier extends Modifier {
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
-		noteData.x += FlxMath.fastSin(0.1) * (currentValue * FlxG.random.int(1, 20));
-		noteData.y += FlxMath.fastSin(0.1) * (currentValue * FlxG.random.int(1, 20));
+		noteData.x += Math.sin(0.1) * (currentValue * FlxG.random.int(1, 20));
+		noteData.y += Math.sin(0.1) * (currentValue * FlxG.random.int(1, 20));
 	}
 
 	override function strumMath(noteData:NotePositionData, lane:Int, pf:Int) {
@@ -1861,8 +1861,8 @@ class TordnadoModifier extends Modifier {
 		var playerColumn = lane % NoteMovement.keyCount;
 		var columnPhaseShift = playerColumn * Math.PI / 3;
 		var phaseShift = (curPos / 135) * subValues.get('speed').value * 0.2;
-		var returnReceptorToZeroOffsetX = (-FlxMath.fastCos(-columnPhaseShift) + 1) / 2 * Note.swagWidth * 3;
-		var offsetX = (-FlxMath.fastCos((phaseShift - columnPhaseShift)) + 1) / 2 * Note.swagWidth * 3 - returnReceptorToZeroOffsetX;
+		var returnReceptorToZeroOffsetX = (-Math.cos(-columnPhaseShift) + 1) / 2 * Note.swagWidth * 3;
+		var offsetX = (-Math.cos((phaseShift - columnPhaseShift)) + 1) / 2 * Note.swagWidth * 3 - returnReceptorToZeroOffsetX;
 
 		noteData.x += offsetX * currentValue;
 	}

@@ -141,7 +141,7 @@ class ModchartUtil {
 
 		var newz = pos.z - 1;
 		var zRange = zNear - zFar;
-		var tanHalfFOV = FlxMath.fastSin(FOV * 0.5) / FlxMath.fastCos(FOV * 0.5); // faster tan
+		var tanHalfFOV = Math.sin(FOV * 0.5) / Math.cos(FOV * 0.5); // faster tan
 		if (pos.z > 1) // if above 1000 z basically
 			newz = 0; // should stop weird mirroring with high z values
 
@@ -187,9 +187,9 @@ class ModchartUtil {
 	public static function getCartesianCoords3D(theta:Float, phi:Float, radius:Float):Vector3D {
 		var pos:Vector3D = new Vector3D();
 		var rad = FlxAngle.TO_RAD;
-		pos.x = FlxMath.fastCos(theta * rad) * FlxMath.fastSin(phi * rad);
-		pos.y = FlxMath.fastCos(phi * rad);
-		pos.z = FlxMath.fastSin(theta * rad) * FlxMath.fastSin(phi * rad);
+		pos.x = Math.cos(theta * rad) * Math.sin(phi * rad);
+		pos.y = Math.cos(phi * rad);
+		pos.z = Math.sin(theta * rad) * Math.sin(phi * rad);
 		pos.x *= radius;
 		pos.y *= radius;
 		pos.z *= radius;
