@@ -8,7 +8,7 @@ import flixel.math.*;
 
 
 /**
- * 2-dimensional Point class
+ * 3-dimensional Point class
  * 
  * ## Pooling
  * To avoid creating new instances, unnecessarily, used FlxPoint3Ds can be
