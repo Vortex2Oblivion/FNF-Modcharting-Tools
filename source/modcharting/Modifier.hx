@@ -1868,29 +1868,96 @@ class TordnadoModifier extends Modifier {
 	}
 }
 
+// troll engine modifiers ported
+
 class ZigZagModifier extends Modifier {
 	override function setupSubValues() {
-		baseValue = 0.0;
-		currentValue = 1.0;
-		subValues.set('amplitude', new ModifierSubValue(1.0));
-		subValues.set('longitude', new ModifierSubValue(1.0));
+		subValues.set('offset', new ModifierSubValue(0.0));
+		subValues.set('period', new ModifierSubValue(1.0));
+	}
+
+	inline public static function triangle(angle:Float) {
+		var fAngle:Float = angle % (Math.PI * 2.0);
+		if (fAngle < 0.0)
+			fAngle += Math.PI * 2.0;
+
+		var result:Float = fAngle / Math.PI;
+
+		if (result < 0.5) {
+			return 2.0 * result;
+		} else if (result < 1.5) {
+			return -2.0 * result + 2.0;
+		} else {
+			return 2.0 * result - 4.0;
+		}
+	}
+
+
+	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
+		var offset = subValues.get('offset').value;
+		var period = subValues.get('period').value;
+		var result:Float = 1;
+		result = triangle((Math.PI * (1 / (period + 1)) * ((curPos + 100 * offset) / Note.swagWidth)));
+
+		noteData.x += (currentValue * Note.swagWidth / 2) * result;
+	}
+
+	inline function mod(a:Float, b:Float):Float {
+		return (a / b);
+	}
+}
+
+class SquareModifier extends Modifier {
+	override function setupSubValues() {
+		subValues.set('offset', new ModifierSubValue(0.0));
+		subValues.set('period', new ModifierSubValue(1.0));
+	}
+
+	inline public static function square(angle:Float) {
+		var fAngle = angle % (Math.PI * 2);
+
+		return fAngle >= Math.PI ? -1.0 : 1.0;
 	}
 
 	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
-		// thank you an ammar for the math LOL
+		var offset = subValues.get('offset').value;
+		var period = subValues.get('period').value;
+		var cum = (Math.PI * (curPos + offset) / (Note.swagWidth + (period * Note.swagWidth)));
 
-		var d = subValues.get('amplitude').value;
-		var c = subValues.get('longitude').value;
+		noteData.x += currentValue * Note.swagWidth / 2 * square(cum);
+	}
+}
 
-		var a = c * (-1 + 2 * mod(Math.floor((d * curPos)), 2));
-		var b = -c * mod(Math.floor((d * curPos)), 2);
-		var x = ((d * curPos) - Math.floor((d * curPos))) * a + b + (c / 2);
-
-		noteData.x += x * currentValue;
+class DigitalModifier extends Modifier {
+	override function setupSubValues() {
+		subValues.set('steps', new ModifierSubValue(0.0));
+		subValues.set('period', new ModifierSubValue(1.0));
+		subValues.set('offset', new ModifierSubValue(0.0));
 	}
 
-	function mod(a:Float, b:Float):Float {
-		return (a / b);
+	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
+		var steps = subValues.get('steps').value + 1;
+		var period = subValues.get('period').value;
+		var offset = subValues.get('offset').value;
+
+		noteData.x += (currentValue * Note.swagWidth / 2) * Math.floor(0.5 + (steps * Math.sin(getDigitalAngle(curPos, offset, period)))) / steps;
+	}
+
+	inline function getDigitalAngle(yOffset:Float, offset:Float, period:Float) {
+		return Math.PI * (yOffset + (1 * offset)) / (Note.swagWidth + (period * Note.swagWidth));
+	}
+}
+
+class SawtoothModifier extends Modifier {
+	override function setupSubValues() {
+		subValues.set('period', new ModifierSubValue(0));
+	}
+
+	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
+		var period = subValues.get('period').value + 1;
+		var p = (0.5 / period * curPos) / Note.swagWidth;
+
+		noteData.x += (currentValue * Note.swagWidth) * (p - Math.floor(p));
 	}
 }
 
@@ -2094,5 +2161,38 @@ class ColorTransformBlue extends Modifier {
 
 	override function strumMath(noteData:NotePositionData, lane:Int, pf:Int) {
 		noteData.blueOffset += currentValue;
+	}
+}
+
+class SpiralXModifier extends Modifier {
+	override function setupSubValues() {
+		subValues.set('spacing', new ModifierSubValue(0.0));
+		subValues.set('speed', new ModifierSubValue(1.0));
+		subValues.set('offset', new ModifierSubValue(0.0));
+	}
+
+	function spiral(oteData:NotePositionData, lane:Int, curPos:Float, pf:Int, func:Float->Float):Float {
+		var dist = subValues.get('spacing').value * 33.5;
+		var beat = ((subValues.get('speed').value * cast(FlxG.state, states.MusicBeatState).curDecBeat) + (subValues.get('offset').value)) * Math.PI / 4;
+		var radiusOffset = -curPos / 4;
+		var radius = radiusOffset + dist * lane % NoteMovement.keyCount;
+
+		return func(-curPos / Conductor.crochet * Math.PI + beat) * radius * currentValue;
+	}
+
+	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
+		noteData.x += spiral(noteData, lane, curPos, pf, Math.cos);
+	}
+}
+
+class SpiralYModifier extends SpiralXModifier {
+	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
+		noteData.y += spiral(noteData, lane, curPos, pf, Math.sin);
+	}
+}
+
+class SpiralZModifier extends SpiralXModifier {
+	override function noteMath(noteData:NotePositionData, lane:Int, curPos:Float, pf:Int) {
+		noteData.z += spiral(noteData, lane, curPos, pf, Math.sin);
 	}
 }

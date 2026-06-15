@@ -274,6 +274,13 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 		BeatYModifier,
 		BeatZModifier,
 		ShrinkModifier,
+		ZigZagModifier,
+		//SquareModifier,
+		SawtoothModifier,
+		DigitalModifier,
+		SpiralXModifier,
+		SpiralYModifier,
+		SpiralZModifier,
 		// Target Modifiers
 		RotateModifier,
 		StrumLineRotateModifier,
@@ -1624,6 +1631,18 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 				return "Modifier used to do a wave at Y poss of the notes and targets";
 			case 'DrunkZModifier':
 				return "Modifier used to do a wave at Z (Far, Close) poss of the notes and targets";
+			case 'SchmovinDrunkXModifier':
+				return "Port of the drunk modifier from Schmovin (X axis)";
+			case 'SchmovinDrunkYModifier':
+				return "Port of the drunk modifier from Schmovin (Y axis)";
+			case 'SchmovinDrunkZModifier':
+				return "Port of the drunk modifier from Schmovin (Z axis)";
+			case 'SchmovinTipsyXModifier':
+				return "Port of the tipsy modifier from Schmovin (X axis)";
+			case 'SchmovinTipsyYModifier':
+				return "Port of the tipsy modifier from Schmovin (Y axis)";
+			case 'SchmovinTipsyZModifier':
+				return "Port of the tipsy modifier from Schmovin (Z axis)";
 			case 'TipsyXModifier':
 				return "Modifier similar to DrunkX but don't affect notes poss";
 			case 'TipsyYModifier':
@@ -1810,6 +1829,20 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 				return "Alters the color transform of a note on the green channel (0-255)";
 			case 'ColorTransformBlue':
 				return "Alters the color transform of a note on the blue channel (0-255)";
+			case "SprialXModifier":
+				return "Makes notes move in a spiral (X axis).  Best combined with reverse 0.5 and flip 0.5.";
+			case "SprialYModifier":
+				return "Makes notes move in a spiral (Y axis).  Best combined with reverse 0.5 and flip 0.5.";
+			case "SprialZModifier":
+				return "Makes notes move in a spiral (Z axis).  Best combined with reverse 0.5 and flip 0.5.";
+			case "SawtoothModifier":
+				return "Makes notes move in a sawtooth.";
+			case "DigitalModifier":
+				return "Makes notes move in a digital pattern.";
+			case "ZigZagModifier":
+				return "Makes notes move in a zigzag pattern.";
+			case "SquareModifier":
+				return "Makes notes move in a square.";
 		}
 		return "Unknown Modifer";
 	}
