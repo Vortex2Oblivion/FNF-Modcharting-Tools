@@ -1829,11 +1829,11 @@ class ModchartEditorState extends #if (PSYCH && PSYCHVERSION >= "0.7") backend.M
 				return "Alters the color transform of a note on the green channel (0-255)";
 			case 'ColorTransformBlue':
 				return "Alters the color transform of a note on the blue channel (0-255)";
-			case "SprialXModifier":
+			case "SpiralXModifier":
 				return "Makes notes move in a spiral (X axis).  Best combined with reverse 0.5 and flip 0.5.";
-			case "SprialYModifier":
+			case "SpiralYModifier":
 				return "Makes notes move in a spiral (Y axis).  Best combined with reverse 0.5 and flip 0.5.";
-			case "SprialZModifier":
+			case "SpiralZModifier":
 				return "Makes notes move in a spiral (Z axis).  Best combined with reverse 0.5 and flip 0.5.";
 			case "SawtoothModifier":
 				return "Makes notes move in a sawtooth.";
